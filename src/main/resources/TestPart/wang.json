@@ -1,0 +1,10 @@
+{
+  "name":"wang",
+  "age":25,
+  "birthday":"1990-01-01",
+  "school":"lanxiang",
+  "major":["lifa","wajueji"],
+  "has_girlfriend":false,
+  "car":null,
+  "house":null
+}
