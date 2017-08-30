@@ -8,9 +8,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>UserInfo</title>
+    <jsp:include page="_header.jsp"/>
 </head>
 <body>
+<div class="container">
+<jsp:include page="_head_for_show.jsp"/>
 
+<jsp:include page="_footer.jsp"/>
+</div>
 </body>
 </html>

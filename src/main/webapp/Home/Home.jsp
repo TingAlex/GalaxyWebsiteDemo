@@ -8,145 +8,109 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Home</title>
     <jsp:include page="_header.jsp"/>
 </head>
 <body>
 <div class="container">
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">Galaxy</a>
-            </div>
-            <form class="navbar-form navbar-left" role="search">
-                <div class="form-group"><input type="text" class="form-control" placeholder="Serarch"></div>
-                <button type="submit" class="btn btn-default">Google</button>
-            </form>
-            <ul class="nav navbar-nav navbar-left">
-                <!--<li class="active"><a href="#">Dropdown</a></li>-->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Dropdown
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">论坛</a></li>
-                        <li><a href="#">交易</a></li>
-                        <li><a href="#">百科</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <div class="pull-right">
-                <button id="signin" data-toggle="modal" data-target="#SignInModel" class="btn navbar-btn btn-primary">
-                    Sign in
-                </button>
-                <a class="hide" href="/test/userpage" id="username"></a>
-                <button id="signup" data-toggle="modal" data-target="#SignUpModel" class="btn navbar-btn btn-primary">
-                    Sign up
-                </button>
-                <button id="quit" class="btn navbar-btn btn-primary fade" onclick="undologin()">
-                    Quit
-                </button>
-            </div>
-        </div>
-    </nav>
-
+    <jsp:include page="_head_for_show.jsp"/>
     <%--<form class="form-horizontal" role="form" onsubmit="return check_signin_form()">--%>
-        <div class="modal fade" id="SignInModel">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                        <h4 class="modal-title">Sign In</h4>
+    <div class="modal fade" id="SignInModel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                    <h4 class="modal-title">Sign In</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" id="EmailOrNickName1" class="form-control input-lg"
+                               placeholder="UserName or Email">
                     </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <input type="text" id="EmailOrNickName1" class="form-control input-lg"
-                                   placeholder="UserName or Email">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" id="Password1" class="form-control input-lg" placeholder="Password">
-                        </div>
+                    <div class="form-group">
+                        <input type="password" id="Password1" class="form-control input-lg" placeholder="Password">
                     </div>
-                    <div class="modal-footer">
-                        <div class="form-group">
-                            <button class="btn btn-primary btn-lg btn-block" onclick="check_signin_form()">
-                                Sign In
-                            </button>
-                            <span id="tip1"></span>
-                            <span><a href="#" class="pull-left">Find password</a></span>
-                            <span><a href="#" class="pull-right">Sign Up</a></span>
-                        </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-lg btn-block" onclick="check_signin_form()">
+                            Sign In
+                        </button>
+                        <span id="tip1"></span>
+                        <span><a href="#" class="pull-left">Find password</a></span>
+                        <span><a href="#" class="pull-right">Sign Up</a></span>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     <%--</form>--%>
     <%--<form class="form-horizontal" role="form" onsubmit="return check_signup_form()">--%>
-        <div class="modal fade" id="SignUpModel">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                        <h4 class="modal-title">Sign Up</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
+    <div class="modal fade" id="SignUpModel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                    <h4 class="modal-title">Sign Up</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
                         <input type="text" id="Email" class="form-control"
                                placeholder="Email">
                     </div>
-                        <div class="form-group">
-                            <input type="text" id="NickName" class="form-control"
-                                   placeholder="NickName">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" id="Password" class="form-control" placeholder="Password">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="RealName" class="form-control"
-                                   placeholder="RealName">
-                        </div>
-                        <%--<label class="checkbox-inline">--%>
-                            <%--<input type="checkbox" value="体育" id="inlineCheckbox1">体育--%>
-                        <%--</label>--%>
-                        <%--<label class="checkbox-inline">--%>
-                            <%--<input type="checkbox" value="音乐" id="inlineCheckbox2">音乐--%>
-                    <%--</label>--%>
-                        <div class="form-group">
-                            <select class="form-control" id="Gender">
-                                <option value="" selected="true" disabled="true">Gender</option>
-                                <option>Boy</option>
-                                <option>Girl</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="school-name" data-toggle="modal" data-target="#SchoolModel"
-                                   class="form-control" placeholder="Choose your school">
-                        </div>
-                        <div class="form-group">
-                            <select class="form-control" id="schoolyears">
-                                <option value="" selected="true" disabled="true">School Grade</option>
-                                <option>freshman</option>
-                                <option>sophomore</option>
-                                <option>junior</option>
-                                <option>senior</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="TEL" class="form-control"
-                                   placeholder="TEL">
-                        </div>
+                    <div class="form-group">
+                        <input type="text" id="NickName" class="form-control"
+                               placeholder="NickName">
                     </div>
-                    <div class="modal-footer">
-                        <div class="form-group">
-                            <button class="btn btn-primary btn-lg btn-block" onclick="check_signup_form()">
-                                Sign Up
-                            </button>
-                            <span id="tip"></span>
-                        </div>
+                    <div class="form-group">
+                        <input type="password" id="Password" class="form-control" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="RealName" class="form-control"
+                               placeholder="RealName">
+                    </div>
+                    <%--<label class="checkbox-inline">--%>
+                    <%--<input type="checkbox" value="体育" id="inlineCheckbox1">体育--%>
+                    <%--</label>--%>
+                    <%--<label class="checkbox-inline">--%>
+                    <%--<input type="checkbox" value="音乐" id="inlineCheckbox2">音乐--%>
+                    <%--</label>--%>
+                    <div class="form-group">
+                        <select class="form-control" id="Gender">
+                            <option value="" selected="true" disabled="true">Gender</option>
+                            <option>Boy</option>
+                            <option>Girl</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="school-name" data-toggle="modal" data-target="#SchoolModel"
+                               class="form-control" placeholder="Choose your school">
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" id="schoolyears">
+                            <option value="" selected="true" disabled="true">School Grade</option>
+                            <option>freshman</option>
+                            <option>sophomore</option>
+                            <option>junior</option>
+                            <option>senior</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="TEL" class="form-control"
+                               placeholder="TEL">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-lg btn-block" onclick="check_signup_form()">
+                            Sign Up
+                        </button>
+                        <span id="tip"></span>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     <div class="modal fade" id="SchoolModel">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -246,7 +210,7 @@
                         return true;
                     },
                     success: function (data) {
-                        var s=data['Name'];
+                        var s = data['Name'];
                         transTologin(s);
 //                        var s = "";
 //                        $.each(data, function (k, v) {
@@ -302,18 +266,20 @@
 //        alert(email + nickname + password + realname + gender + school + schoolyears + tel);
         $.ajax(
                 {
-                    url:"/test/signup",
-                    data:{"email":email,"nickname":nickname,"password":password,
-                        "realname":realname,"gender":gender,"school":school,"schoolyears":schoolyears,
-                        "tel":tel},
+                    url: "/test/signup",
+                    data: {
+                        "email": email, "nickname": nickname, "password": password,
+                        "realname": realname, "gender": gender, "school": school, "schoolyears": schoolyears,
+                        "tel": tel
+                    },
                     type: "get",
-                    dataType:"json",
-                    beforeSend:function () {
+                    dataType: "json",
+                    beforeSend: function () {
                         $("#tip").html("<span style='color:blue'>Processing</span>");
                         return true;
                     },
-                    success:function (data) {
-                        var s=data['Name'];
+                    success: function (data) {
+                        var s = data['Name'];
                         transTologin(s);
 //                        var s="";
 //                        $.each(data,function (k, v) {
@@ -322,22 +288,22 @@
 //                        alert(s);
                         $("#tip").html("<span style='color:blueviolet'>Sign Up Successful！</span>");
                     },
-                    error:function () {
+                    error: function () {
                         alert('请求出错');
                     },
-                    complete:function () {
+                    complete: function () {
                         $('#acting_tips').hide();
                     }
                 }
         )
     }
 </script>
-<script type="text/javascript">
-    $("#SchoolModel").on('shown.bs.modal', function (e) {
+<script>
+    $("#SchoolModel").on('shown.bs.modal', function () {
         //初始化省份列表
         initProvince();
         //默认情况下, 给第一个省份添加active样式
-        $('#choose-a-province li:first').addClass('active');
+        $("#choose-a-province li:first").addClass('active');
         //初始化大学列表
         initSchool(1);
 
