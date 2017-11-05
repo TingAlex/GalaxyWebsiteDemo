@@ -1,31 +1,21 @@
-package servlet;
+package servlet.Basement;
 
-import bean.TestPart.diaosi;
+//import bean.TestPart.diaosi;
 import bean.UserInfo;
-import com.google.gson.FieldNamingStrategy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import conn.ConnectionUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import utils.MyUtils;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.LinkedList;
 
 import static utils.DatabaseTest.getUserByNickNameOrEmail;
-import static utils.MyUtils.storeLoginedUser;
 
 /**
  * Created by Ting on 2017/8/22.

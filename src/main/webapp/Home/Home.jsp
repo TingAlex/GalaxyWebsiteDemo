@@ -10,12 +10,12 @@
 <head>
     <title>Home</title>
     <jsp:include page="_header.jsp"/>
-    <%--<style>--%>
-        <%--/*body*/--%>
-        <%--/*{*/--%>
-            <%--/*background: #00FF00 url(../bootstrap-3.3.7-dist/nasa.gif) no-repeat;background-size:100%;*/--%>
-        <%--/*}*/--%>
-    <%--</style>--%>
+    <style>
+        body
+        {
+            background: #00FF00 url('../image/wallhaven.jpg') no-repeat;background-size:100%;
+        }
+    </style>
 </head>
 <body>
 <div class="modal fade" id="SignUpModel">
@@ -132,41 +132,7 @@
 </div>
 <div class="container">
     <jsp:include page="_head_for_show.jsp"/>
-    <%--<form class="form-horizontal" role="form" onsubmit="return check_signin_form()">--%>
-    <%--</form>--%>
-    <%--<form class="form-horizontal" role="form" onsubmit="return check_signup_form()">--%>
-    <%--</form>--%>
-    <div class="leftSide">
-        <div class="leftSideUp">
-            <div>星体类别</div>
-            <div>星体参数</div>
-            <div>运行参数</div>
-            <div>星体位置</div>
-        </div>
-        <div class="leftSideMiddle">
 
-        </div>
-        <div class="leftSideDown">
-            <div>历史渊源</div>
-            巴啦啦能量！
-        </div>
-    </div>
-    <div class="main">
-        3d模型
-    </div>
-    <div class="rightSide">
-        <div class="rightSideUp">
-            <div><a href="#">最近值得观测星体</a></div>
-            <div><a href="#">时间</a></div>
-            <div><a href="#">观测带</a></div>
-            <div><a href="#">认领活动</a></div>
-            <!--<div>全年观测星图</div>-->
-            <div><a href="forum.html">论坛</a></div>
-            <div><a href="#">交易</a></div>
-            <div><a href="#">天文百科</a></div>
-            <%--<button onclick="testInsert()">Click</button>--%>
-        </div>
-    </div>
 </div>
 <jsp:include page="_footer.jsp"/>
 <script>

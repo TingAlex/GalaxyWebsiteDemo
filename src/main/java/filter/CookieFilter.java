@@ -17,10 +17,11 @@ import static utils.DatabaseTest.getUserByNickName;
 /**
  * Created by Administrator on 11/19/2016.
  */
-@WebFilter(filterName = "cookieFilter",urlPatterns = {"/*"})
+@WebFilter(filterName = "cookieFilter", urlPatterns = {"/*"})
 public class CookieFilter implements Filter {
     public void destroy() {
     }
+
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;

@@ -1,4 +1,4 @@
-package servlet;
+package servlet.Basement;
 
 import bean.UserInfo;
 import com.google.gson.Gson;

@@ -1,4 +1,4 @@
-package servlet;
+package servlet.Album;
 
 import bean.UserInfo;
 import org.apache.commons.fileupload.FileItem;
