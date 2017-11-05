@@ -9,7 +9,9 @@ import conn.ConnectionUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import utils.MyUtils;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,80 +25,55 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 
 import static utils.DatabaseTest.getUserByNickNameOrEmail;
+import static utils.MyUtils.storeLoginedUser;
 
 /**
  * Created by Ting on 2017/8/22.
  */
-@WebServlet(name = "doLoginServlet",urlPatterns = {"/test/login"})
+@WebServlet(name = "doLoginServlet", urlPatterns = {"/test/login"})
 public class doLoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String Name=req.getParameter("user_id");
-        String Pass=req.getParameter("pass");
+        resp.setCharacterEncoding("UTF-8");
+        String Name = req.getParameter("user_id");
+        String Pass = req.getParameter("pass");
+        String rememberMeStr = req.getParameter("rememberMe");
+        boolean remember= "Y".equals(rememberMeStr);
 
 //        String form=req.getParameter("form_data");
-        System.out.println(Name+" "+Pass);
+        System.out.println(Name + " " + Pass);
         String errorString;
         try {
-            Connection conn= ConnectionUtils.getConnection();
-            UserInfo userA=getUserByNickNameOrEmail(conn,Name,Pass);
-            if(userA!=null)
-            {
+            Connection conn = MyUtils.getStoredConnection(req);
+            UserInfo userA = getUserByNickNameOrEmail(conn, Name, Pass);
+            if (userA != null) {
+                System.out.print(userA.getName());
                 //设置session
-                HttpSession session=req.getSession();
-                session.setAttribute("user",userA);
+                MyUtils.storeLoginedUser(req.getSession(),userA);
+                // If user checked "Remember me".
+                if(remember)  {
+                    MyUtils.storeUserCookie(resp,userA);
+                }
+                // Else delete cookie.
+                else  {
+                    MyUtils.deleteUserCookie(resp);
+                }
                 //把用户信息输出到home.jsp，留待之后实现动态查看自己的缩略信息功能
-                GsonBuilder gsonBuilder=new GsonBuilder();
+                GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.setPrettyPrinting();
-                Gson gson=gsonBuilder.create();
+                Gson gson = gsonBuilder.create();
                 resp.getWriter().print(gson.toJson(userA));
+            } else{
+                UserInfo newUser=new UserInfo();
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.setPrettyPrinting();
+                Gson gson = gsonBuilder.create();
+                resp.getWriter().print(gson.toJson(newUser));
             }
-            else
-                errorString="No Find this User which NickName is "+Name;
-        }catch (ClassNotFoundException e){
+        } catch (SQLException e) {
             e.printStackTrace();
-            errorString=e.getMessage();
-        }catch (SQLException e){
-            e.printStackTrace();
-            errorString=e.getMessage();
+            errorString = e.getMessage();
         }
-//        //test
-//        diaosi wang=new diaosi();
-//
-//        wang.setCar(null);
-//        wang.setHas_girlfriend(true);
-//        LinkedList<String> major=new LinkedList<String>();
-//        major.add("lala");
-//        major.add("kaka");
-//        wang.setMajor(major);
-//        wang.setHouse(null);
-//        wang.setName("lala");
-//        wang.setSchool("lanxiang");
-//        wang.setIgnore("lalalalala");
-//        GsonBuilder gsonBuilder=new GsonBuilder();
-//        gsonBuilder.setPrettyPrinting();
-//        gsonBuilder.setFieldNamingStrategy(new FieldNamingStrategy(){
-//
-//            public String translateName(Field field) {
-//                if(field.getName().equals("name")){
-//                    return "NAME";
-//                }else
-//                    return field.getName();
-//            }
-//        });
-//        Gson gson=gsonBuilder.create();
-//        resp.getWriter().print(gson.toJson(wang));
-        //test
-//        resp.getWriter().print("123445");
-//        JSONArray jsonArray = JSONArray.fromObject(jsonStr);
-//        String name = "";
-//        String age = "";
-//        for (int i = 0; i < jsonArray.size(); i++) {
-//            JSONObject jsonJ = jsonArray.getJSONObject(i);
-//            name = jsonJ.getString("name");
-//            age = jsonJ.getString("age");
-//        }
-//        System.out.println(form);
     }
 
     @Override

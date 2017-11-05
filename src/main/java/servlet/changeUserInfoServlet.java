@@ -15,37 +15,35 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static utils.DatabaseTest.changeUserInfo;
 import static utils.DatabaseTest.createUser;
-import static utils.MyUtils.storeLoginedUser;
 
 /**
- * Created by Ting on 2017/8/26.
+ * Created by Ting on 2017/9/21.
  */
-@WebServlet(name = "doSignUpServlet", urlPatterns = {"/test/signup"})
-public class doSignUpServlet extends HttpServlet {
+@WebServlet(name = "changeUserInfoServlet",urlPatterns = {"/test/change_user_info"})
+public class changeUserInfoServlet extends HttpServlet{
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setCharacterEncoding("UTF-8");
         UserInfo user=new UserInfo();
+        HttpSession session = req.getSession();
+        UserInfo beforeUser=(UserInfo)session.getAttribute("user");
+        String beforeUID=beforeUser.getUID();
+        user.setUID(beforeUID);
         user.setName(req.getParameter("realname"));
         user.setGender(req.getParameter("gender"));
         user.setSchool(req.getParameter("school"));
         user.setSchoolYears(req.getParameter("schoolyears"));
         user.setTel(req.getParameter("tel"));
         user.setNickName(req.getParameter("nickname"));
-        user.setPassword(req.getParameter("password"));
-        user.setExperience(0L);
         user.setEmail(req.getParameter("email"));
-        user.setSign("");
-        user.setUID();
-        user.setSchoolAdmin(false);
-        user.setAdmin(false);
+        user.setSign(req.getParameter("sign"));
         String errorString="";
         try {
             Connection conn= ConnectionUtils.getConnection();
-            createUser(conn, user);
-            //设置session
-            storeLoginedUser(req.getSession(),user);
+            user=changeUserInfo(conn, user);
+            session.setAttribute("user",user);
             //把用户信息输出到home.jsp，留待之后实现动态查看自己的缩略信息功能
             GsonBuilder gsonBuilder=new GsonBuilder();
             gsonBuilder.setPrettyPrinting();
@@ -54,7 +52,7 @@ public class doSignUpServlet extends HttpServlet {
         }catch (ClassNotFoundException e){
             e.printStackTrace();
             errorString = e.getMessage();
-        }catch (SQLException e) {
+        }catch (SQLException e){
             e.printStackTrace();
             errorString = e.getMessage();
         }

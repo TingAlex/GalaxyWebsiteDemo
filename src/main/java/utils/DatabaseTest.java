@@ -1,32 +1,35 @@
 package utils;
 
+import bean.Album;
 import bean.Product;
 import bean.UserInfo;
 import conn.ConnectionUtils;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by Ting on 2017/8/17.
  */
 public class DatabaseTest {
+    public static String ResourcePath="C:\\Users\\Ting\\Documents\\Galaxy\\";
     public static void InitDatabase(Connection conn) throws SQLException{
         PreparedStatement pstm;
-        String createUserInfoTable="CREATE TABLE userinfo(id CHAR (32) NOT NULL PRIMARY KEY, Name CHAR(40) NOT NULL ,Gender char(10),School char(50),SchoolYears char(20), TEL char(20),NickName char(40),Password char(20),Experience int(5),Email char(40),Sign char(50));";
-        String createProductTable="CREATE TABLE product(id CHAR(32) NOT NULL PRIMARY KEY,Hot Long,Name CHAR(40) NOT NULL ,Detail CHAR(100),CreateDate DATE,ExpiredDate DATE,Personal CHAR(40),Official CHAR(50),TEL char(20),PricePerDay INT(4),Settled BOOLEAN,Useless BOOLEAN,Borrower CHAR(40));";
-        String createNoticeAndInvationTable="CREATE TABLE Notice(id CHAR(32) NOT NULL PRIMARY KEY,Sender CHAR(40) NOT NULL ,Official CHAR(50),Document CHAR(100),CreateDate DATE,ExpiredDate DATE,Receiver CHAR(40),Useless BOOLEAN,RangeArea CHAR(50),Geolocation CHAR(100),Classfy INT(4),Hot LONG);";
+        String createUserInfoTable="CREATE TABLE userinfo(id CHAR (32) NOT NULL PRIMARY KEY, Name CHAR(40) NOT NULL ,Gender char(10),School char(50),SchoolYears char(20), TEL char(20),NickName char(40),Password char(20),Experience int(5),Email char(40),Sign char(50),HeadUID char(32),IsAdmin BOOLEAN NOT NULL,IsSchoolAdmin BOOLEAN NOT NULL )ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        String createAlbumTable="CREATE TABLE Album(UID CHAR(32) NOT NULL , PersonUID CHAR(32) NOT NULL , Type CHAR(32) NOT NULL , CreateDate DATETIME NOT NULL , Geolocation CHAR(50) , Hot LONG , Document CHAR(100))ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+
+        String createProductTable="CREATE TABLE product(id CHAR(32) NOT NULL PRIMARY KEY,Hot Long,Name CHAR(40) NOT NULL ,Detail CHAR(100),CreateDate DATE,ExpiredDate DATE,Personal CHAR(40),Official CHAR(50),TEL char(20),PricePerDay INT(4),Settled BOOLEAN,Useless BOOLEAN,Borrower CHAR(40))ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        String createNoticeAndInvationTable="CREATE TABLE Notice(id CHAR(32) NOT NULL PRIMARY KEY,Sender CHAR(40) NOT NULL ,Official CHAR(50),Document CHAR(100),CreateDate DATE,ExpiredDate DATE,Receiver CHAR(40),Useless BOOLEAN,RangeArea CHAR(50),Geolocation CHAR(100),Classfy INT(4),Hot LONG)ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
         String sql="DROP DATABASE IF EXISTS galaxy;";
         pstm=conn.prepareStatement(sql);
         pstm.executeUpdate();
 
-        sql="CREATE DATABASE galaxy;";
+        sql="CREATE DATABASE galaxy character set utf8 COLLATE utf8_general_ci;";
         pstm=conn.prepareStatement(sql);
         pstm.executeUpdate();
 
@@ -35,6 +38,10 @@ public class DatabaseTest {
         pstm.executeUpdate();
 
         sql=createUserInfoTable;
+        pstm=conn.prepareStatement(sql);
+        pstm.executeUpdate();
+
+        sql=createAlbumTable;
         pstm=conn.prepareStatement(sql);
         pstm.executeUpdate();
 
@@ -48,19 +55,35 @@ public class DatabaseTest {
     }
     public static void createUser(Connection conn, UserInfo user) throws SQLException {
 
-        String sql = "Insert into UserInfo(id,Name,Gender,School,SchoolYears,TEL,NickName,Password,Experience,Email,Sign) values (?,?,?,?,?,?,?,?,?,?,?) ";
+        String UIDPath=user.getUID();
+        String userPath=ResourcePath+UIDPath;
+
+        File rootFile=new File(userPath);
+        rootFile.mkdir();
+        String picPath=userPath+"\\pic";
+        String productPath=userPath+"\\product";
+        rootFile=new File(picPath);
+        rootFile.mkdir();
+        rootFile=new File(productPath);
+        rootFile.mkdir();
+        //完善这里的文件夹生成
+
+        String sql = "Insert into UserInfo(id,Name,Gender,School,SchoolYears,TEL,NickName,Password,Experience,Email,Sign,HeadUID,IsAdmin,IsSchoolAdmin) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
         PreparedStatement pstm = conn.prepareStatement(sql);
         pstm.setString(1,user.getUID());
         pstm.setString(2,user.getName());
         pstm.setString(3, user.getGender());
         pstm.setString(4,user.getSchool());
         pstm.setString(5,user.getSchoolYears());
-        pstm.setString(6,user.getTEL());
+        pstm.setString(6,user.getTel());
         pstm.setString(7,user.getNickName());
         pstm.setString(8,user.getPassword());
         pstm.setLong(9,user.getExperience());
         pstm.setString(10,user.getEmail());
         pstm.setString(11,user.getSign());
+        pstm.setString(12,user.getHeadUID());
+        pstm.setBoolean(13,user.getAdmin());
+        pstm.setBoolean(14,user.getSchoolAdmin());
         pstm.executeUpdate();
     }
     public static void createProduct(Connection conn, Product product) throws SQLException{
@@ -81,6 +104,43 @@ public class DatabaseTest {
         pstm.setString(13,product.getBorrower());
         pstm.executeUpdate();
     }
+    public static void setDefaultHeadPic(Connection conn){
+
+    }
+    //***将一张图片设置为用户头像
+    public static void addHeadPic(Connection conn, Album headPic) throws SQLException{
+        String sql="UPDATE userinfo SET HeadUID='"+headPic.getUID()+"' WHERE id='"+headPic.getPersonUID()+"'";
+        PreparedStatement pstm=conn.prepareStatement(sql);
+        pstm.executeUpdate();
+    }
+    public static void addPics(Connection conn,Album pic) throws SQLException{
+        String sql="INSERT INTO Album(UID,PersonUID,Type,CreateDate,Geolocation,Hot,Document) VALUES (?,?,?,?,?,?,?)";
+        PreparedStatement pstm=conn.prepareStatement(sql);
+        pstm.setString(1,pic.getUID());
+        pstm.setString(2,pic.getPersonUID());
+        pstm.setString(3,pic.getType());
+        pstm.setDate(4,new java.sql.Date(pic.getCreateDate().getTime()));
+        pstm.setString(5,pic.getGeolocation());
+        pstm.setLong(6,pic.getHot());
+        pstm.setString(7,pic.getDocument());
+        pstm.executeUpdate();
+    }
+    public static String getPicByUID(Connection conn,String UID) throws SQLException{
+        //***通过用户中的headUID取得Album表中对应头像图片的UID和type的拼接字符串
+        return UID;
+    }
+    public static UserInfo changeUserInfo(Connection conn,UserInfo user) throws SQLException{
+        //需要根据参数user的UID查找到UserInfo表中对应的项，并把那项user中的内容更改。需要更改的属性有
+//        user.setName(req.getParameter("realname"));
+//        user.setGender(req.getParameter("gender"));
+//        user.setSchool(req.getParameter("school"));
+//        user.setSchoolYears(req.getParameter("schoolyears"));
+//        user.setTel(req.getParameter("tel"));
+//        user.setNickName(req.getParameter("nickname"));
+//        user.setEmail(req.getParameter("email"));
+//        user.setSign(req.getParameter("sign"));
+        return user;
+    }
     public static UserInfo getUserByNickName(Connection conn,String NickName)throws SQLException{
         String sql="SELECT a.id,a.Name,a.Gender,a.School,a.SchoolYears,a.TEL,a.NickName,a.Password,a.Experience,a.Email,a.Sign FROM userinfo a WHERE a.NickName=?";
         PreparedStatement pstm=conn.prepareStatement(sql);
@@ -94,7 +154,7 @@ public class DatabaseTest {
             user.setGender(rs.getString("Gender"));
             user.setSchool(rs.getString("School"));
             user.setSchoolYears(rs.getString("SchoolYears"));
-            user.setTEL(rs.getString("TEL"));
+            user.setTel(rs.getString("TEL"));
             user.setNickName(rs.getString("NickName"));
             user.setPassword(rs.getString("Password"));
             user.setExperience(rs.getLong("Experience"));
@@ -119,7 +179,7 @@ public class DatabaseTest {
             user.setGender(rs.getString("Gender"));
             user.setSchool(rs.getString("School"));
             user.setSchoolYears(rs.getString("SchoolYears"));
-            user.setTEL(rs.getString("TEL"));
+            user.setTel(rs.getString("TEL"));
             user.setNickName(rs.getString("NickName"));
             user.setPassword(rs.getString("Password"));
             user.setExperience(rs.getLong("Experience"));
@@ -193,9 +253,24 @@ public class DatabaseTest {
     public static void main(String[] args){
         final String docPath="C:\\Users\\Ting\\Documents\\ResourcesForGalaxy";
         String errorString=null;
-        UserInfo user =new UserInfo("lala","Woman","DLUT","Junier","13840853573","BaiBai","12345",100L,"10chongzheng@outlook.com","ahahahahaha");
+        UserInfo user =new UserInfo();
+        user.setUID();
 
-        Product product=new Product(user,0L,"WangYuanJing","Get it For Free!", new Date(),new Date(),"",0,false,false,"");
+        user.setSign("ahahahahaha");
+        user.setEmail("10chongzheng@outlook.com");
+        user.setExperience(100L);
+        user.setAdmin(false);
+        user.setGender("Woman");
+        user.setHeadUID("");
+        user.setNickName("ting");
+        user.setPassword("12345");
+        user.setSchool("DLUT");
+        user.setSchoolAdmin(false);
+        user.setSchoolYears("Junier");
+        user.setTel("18340853573");
+        user.setName("石崇正");
+
+//        Product product=new Product(user,0L,"WangYuanJing","Get it For Free!", new Date(),new Date(),"",0,false,false,"");
         //Init
         try {
             Connection conn= ConnectionUtils.getConnection();
@@ -246,22 +321,22 @@ public class DatabaseTest {
 //            errorString=e.getMessage();
 //        }
         //Get a user by NickName or Email and Password
-//        try {
-//            Connection conn=ConnectionUtils.getConnection();
-//            String testNickNameOrEmail="BaiBai";
-//            String testPassword="12345";
-//            UserInfo userA=getUserByNickNameOrEmail(conn,testNickNameOrEmail,testPassword);
-//            if(userA!=null)
-//                System.out.print(userA.getEmail());
-//            else
-//                errorString="No Find this User which NickName is "+testNickNameOrEmail;
-//        }catch (ClassNotFoundException e){
-//            e.printStackTrace();
-//            errorString=e.getMessage();
-//        }catch (SQLException e){
-//            e.printStackTrace();
-//            errorString=e.getMessage();
-//        }
+        try {
+            Connection conn=ConnectionUtils.getConnection();
+            String testNickNameOrEmail="ting";
+            String testPassword="12345";
+            UserInfo userA=getUserByNickNameOrEmail(conn,testNickNameOrEmail,testPassword);
+            if(userA!=null)
+                System.out.print(userA.getName());
+            else
+                errorString="No Find this User which NickName is "+testNickNameOrEmail;
+        }catch (ClassNotFoundException e){
+            e.printStackTrace();
+            errorString=e.getMessage();
+        }catch (SQLException e){
+            e.printStackTrace();
+            errorString=e.getMessage();
+        }
         //Get products by Name
 //        String UID="";
 //        try {
@@ -292,7 +367,7 @@ public class DatabaseTest {
 //            errorString=e.getMessage();
 //        }
         //Get All  product by Default
-        LinkedList<Product> productsAll;
+//        LinkedList<Product> productsAll;
 //        try {
 //            Connection conn=ConnectionUtils.getConnection();
 //            productsAll=getAllProductsByDefault(conn);

@@ -13,131 +13,157 @@
     <table id="9" parent="1" name="userinfo" />
     <table id="10" parent="1" name="product" />
     <table id="11" parent="1" name="notice" />
-    <column id="12" parent="9" name="id">
+    <table id="12" parent="1" name="album" />
+    <column id="13" parent="9" name="id">
       <mandatory>1</mandatory>
       <data-type>char(32)|0</data-type>
     </column>
-    <column id="13" parent="9" name="Name">
+    <column id="14" parent="9" name="Name">
       <mandatory>1</mandatory>
       <data-type>char(40)|0</data-type>
     </column>
-    <column id="14" parent="9" name="Gender">
+    <column id="15" parent="9" name="Gender">
       <data-type>char(10)|0</data-type>
     </column>
-    <column id="15" parent="9" name="School">
+    <column id="16" parent="9" name="School">
       <data-type>char(50)|0</data-type>
     </column>
-    <column id="16" parent="9" name="SchoolYears">
+    <column id="17" parent="9" name="SchoolYears">
       <data-type>char(20)|0</data-type>
     </column>
-    <column id="17" parent="9" name="TEL">
+    <column id="18" parent="9" name="TEL">
       <data-type>char(20)|0</data-type>
     </column>
-    <column id="18" parent="9" name="NickName">
+    <column id="19" parent="9" name="NickName">
       <data-type>char(40)|0</data-type>
     </column>
-    <column id="19" parent="9" name="Password">
+    <column id="20" parent="9" name="Password">
       <data-type>char(20)|0</data-type>
     </column>
-    <column id="20" parent="9" name="Experience">
+    <column id="21" parent="9" name="Experience">
       <data-type>int(5)|0</data-type>
     </column>
-    <column id="21" parent="9" name="Email">
+    <column id="22" parent="9" name="Email">
       <data-type>char(40)|0</data-type>
     </column>
-    <column id="22" parent="9" name="Sign">
+    <column id="23" parent="9" name="Sign">
       <data-type>char(50)|0</data-type>
     </column>
     <key id="23" parent="9" name="PRIMARY">
       <columns>id</columns>
       <primary>1</primary>
     </key>
-    <column id="24" parent="10" name="id">
+    <column id="28" parent="10" name="id">
       <mandatory>1</mandatory>
       <data-type>char(32)|0</data-type>
     </column>
-    <column id="25" parent="10" name="Hot">
+    <column id="29" parent="10" name="Hot">
       <data-type>mediumtext|0</data-type>
     </column>
-    <column id="26" parent="10" name="Name">
+    <column id="30" parent="10" name="Name">
       <mandatory>1</mandatory>
       <data-type>char(40)|0</data-type>
     </column>
-    <column id="27" parent="10" name="Detail">
+    <column id="31" parent="10" name="Detail">
       <data-type>char(100)|0</data-type>
     </column>
-    <column id="28" parent="10" name="CreateDate">
+    <column id="32" parent="10" name="CreateDate">
       <data-type>date|0</data-type>
     </column>
-    <column id="29" parent="10" name="ExpiredDate">
+    <column id="33" parent="10" name="ExpiredDate">
       <data-type>date|0</data-type>
     </column>
-    <column id="30" parent="10" name="Personal">
+    <column id="34" parent="10" name="Personal">
       <data-type>char(40)|0</data-type>
     </column>
-    <column id="31" parent="10" name="Official">
+    <column id="35" parent="10" name="Official">
       <data-type>char(50)|0</data-type>
     </column>
-    <column id="32" parent="10" name="TEL">
+    <column id="36" parent="10" name="TEL">
       <data-type>char(20)|0</data-type>
     </column>
-    <column id="33" parent="10" name="PricePerDay">
+    <column id="37" parent="10" name="PricePerDay">
       <data-type>int(4)|0</data-type>
     </column>
-    <column id="34" parent="10" name="Settled">
+    <column id="38" parent="10" name="Settled">
       <data-type>tinyint(1)|0</data-type>
     </column>
-    <column id="35" parent="10" name="Useless">
+    <column id="39" parent="10" name="Useless">
       <data-type>tinyint(1)|0</data-type>
     </column>
-    <column id="36" parent="10" name="Borrower">
+    <column id="40" parent="10" name="Borrower">
       <data-type>char(40)|0</data-type>
     </column>
-    <key id="37" parent="10" name="PRIMARY">
+    <key id="41" parent="10" name="PRIMARY">
       <columns>id</columns>
       <primary>1</primary>
     </key>
-    <column id="38" parent="11" name="id">
+    <column id="42" parent="11" name="id">
       <mandatory>1</mandatory>
       <data-type>char(32)|0</data-type>
     </column>
-    <column id="39" parent="11" name="Sender">
+    <column id="43" parent="11" name="Sender">
       <mandatory>1</mandatory>
       <data-type>char(40)|0</data-type>
     </column>
-    <column id="40" parent="11" name="Official">
+    <column id="44" parent="11" name="Official">
       <data-type>char(50)|0</data-type>
     </column>
-    <column id="41" parent="11" name="Document">
+    <column id="45" parent="11" name="Document">
       <data-type>char(100)|0</data-type>
     </column>
-    <column id="42" parent="11" name="CreateDate">
+    <column id="46" parent="11" name="CreateDate">
       <data-type>date|0</data-type>
     </column>
-    <column id="43" parent="11" name="ExpiredDate">
+    <column id="47" parent="11" name="ExpiredDate">
       <data-type>date|0</data-type>
     </column>
-    <column id="44" parent="11" name="Receiver">
+    <column id="48" parent="11" name="Receiver">
       <data-type>char(40)|0</data-type>
     </column>
-    <column id="45" parent="11" name="Useless">
+    <column id="49" parent="11" name="Useless">
       <data-type>tinyint(1)|0</data-type>
     </column>
-    <column id="46" parent="11" name="RangeArea">
+    <column id="50" parent="11" name="RangeArea">
       <data-type>char(50)|0</data-type>
     </column>
-    <column id="47" parent="11" name="Geolocation">
+    <column id="51" parent="11" name="Geolocation">
       <data-type>char(100)|0</data-type>
     </column>
-    <column id="48" parent="11" name="Classfy">
+    <column id="52" parent="11" name="Classfy">
       <data-type>int(4)|0</data-type>
     </column>
-    <column id="49" parent="11" name="Hot">
+    <column id="53" parent="11" name="Hot">
       <data-type>mediumtext|0</data-type>
     </column>
-    <key id="50" parent="11" name="PRIMARY">
+    <key id="54" parent="11" name="PRIMARY">
       <columns>id</columns>
       <primary>1</primary>
     </key>
+    <column id="55" parent="12" name="UID">
+      <mandatory>1</mandatory>
+      <data-type>char(32)|0</data-type>
+    </column>
+    <column id="56" parent="12" name="PersonUID">
+      <mandatory>1</mandatory>
+      <data-type>char(32)|0</data-type>
+    </column>
+    <column id="57" parent="12" name="Type">
+      <mandatory>1</mandatory>
+      <data-type>char(32)|0</data-type>
+    </column>
+    <column id="58" parent="12" name="CreateDate">
+      <mandatory>1</mandatory>
+      <data-type>datetime|0</data-type>
+    </column>
+    <column id="59" parent="12" name="Geolocation">
+      <data-type>char(50)|0</data-type>
+    </column>
+    <column id="60" parent="12" name="Hot">
+      <data-type>mediumtext|0</data-type>
+    </column>
+    <column id="61" parent="12" name="Document">
+      <data-type>char(100)|0</data-type>
+    </column>
   </database-model>
 </dataSource>

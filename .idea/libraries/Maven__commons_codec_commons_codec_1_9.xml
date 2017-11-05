@@ -2,6 +2,7 @@
   <library name="Maven: commons-codec:commons-codec:1.9">
     <CLASSES>
       <root url="jar://$MAVEN_REPOSITORY$/commons-codec/commons-codec/1.9/commons-codec-1.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/main/java/conn/mysql-connector-java-6.0.5.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$MAVEN_REPOSITORY$/commons-codec/commons-codec/1.9/commons-codec-1.9-javadoc.jar!/" />

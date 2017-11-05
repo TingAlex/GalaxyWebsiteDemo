@@ -2,8 +2,6 @@ package bean;
 
 import utils.UIDGenerator;
 
-import java.util.LinkedList;
-
 /**
  * Created by Ting on 2017/8/16.
  */
@@ -13,16 +11,39 @@ public class UserInfo {
     private String Gender;
     private String School;
     private String SchoolYears;
-    private String TEL;
+    private String Tel;
     private String NickName;
     private String Password;
     private Long Experience;
     private String Email;
     private String Sign;
-//    private LinkedList<String> NoticeList;
-//    private LinkedList<String> ListenerList;
-//    private LinkedList<String> WatchList;
-//    private LinkedList<String> ProductList;
+    private String HeadUID;
+    private Boolean IsAdmin;
+    private Boolean IsSchoolAdmin;
+
+    public String getHeadUID() {
+        return HeadUID;
+    }
+
+    public void setHeadUID(String headUID) {
+        HeadUID = headUID;
+    }
+
+    public Boolean getAdmin() {
+        return IsAdmin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        IsAdmin = admin;
+    }
+
+    public Boolean getSchoolAdmin() {
+        return IsSchoolAdmin;
+    }
+
+    public void setSchoolAdmin(Boolean schoolAdmin) {
+        IsSchoolAdmin = schoolAdmin;
+    }
 
 
     public String getUID() {
@@ -36,39 +57,24 @@ public class UserInfo {
         this.UID = UIDGenerator.getUID();
     }
 
-    public UserInfo(String name, String gender, String school, String schoolYears, String TEL, String nickName, String password, Long experience, String email, String sign) {
-        this.UID= UIDGenerator.getUID();
+    public UserInfo(String UID, String name, String gender, String school, String schoolYears, String Tel, String nickName, String password, Long experience, String email, String sign, String headUID, Boolean isAdmin, Boolean isSchoolAdmin) {
+        this.UID = UID;
         Name = name;
         Gender = gender;
         School = school;
         SchoolYears = schoolYears;
-        this.TEL = TEL;
+        this.Tel = Tel;
         NickName = nickName;
         Password = password;
         Experience = experience;
         Email = email;
         Sign = sign;
+        HeadUID = headUID;
+        IsAdmin = isAdmin;
+        IsSchoolAdmin = isSchoolAdmin;
     }
 
-//    public UserInfo(String name, String gender, String school, String schoolYears, String TEL, String nickName, String password, Long experience, String email, String sign, LinkedList<String> noticeList, LinkedList<String> listenerList, LinkedList<String> watchList, LinkedList<String> productList) {
-//        Name = name;
-//        Gender = gender;
-//        School = school;
-//        SchoolYears = schoolYears;
-//        this.TEL = TEL;
-//        NickName = nickName;
-//        Password = password;
-//        Experience = experience;
-//        Email = email;
-//        Sign = sign;
-//        NoticeList = noticeList;
-//        ListenerList = listenerList;
-//        WatchList = watchList;
-//        ProductList = productList;
-//    }
-
-    public UserInfo() {
-    }
+    public UserInfo() {}
 
     public String getName() {
         return Name;
@@ -102,12 +108,12 @@ public class UserInfo {
         SchoolYears = schoolYears;
     }
 
-    public String getTEL() {
-        return TEL;
+    public String getTel() {
+        return Tel;
     }
 
-    public void setTEL(String TEL) {
-        this.TEL = TEL;
+    public void setTel(String tel) {
+        this.Tel = tel;
     }
 
     public String getNickName() {

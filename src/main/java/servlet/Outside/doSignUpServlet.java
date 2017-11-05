@@ -44,6 +44,7 @@ public class doSignUpServlet extends HttpServlet {
             try {
                 Connection conn=ConnectionUtils.getConnection();
                 DBUtils.createUser(conn, userName ,gender,password);
+
             }catch (ClassNotFoundException e){
                 e.printStackTrace();
                 hasError = true;

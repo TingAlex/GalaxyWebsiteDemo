@@ -20,8 +20,6 @@ public class JDBCFilter implements Filter {
     }
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request= (HttpServletRequest) req;
-
-
         //
         // Only open connections for the special requests need
         // connection. (For example, the path to the servlet, JSP, ..)
@@ -92,7 +90,6 @@ public class JDBCFilter implements Filter {
         // Value: ServletRegistration
         Map<String, ? extends ServletRegistration> servletRegistrations = request.getServletContext()
                 .getServletRegistrations();
-
 
         // Collection of all servlet in your webapp.
         Collection<? extends ServletRegistration> values = servletRegistrations.values();

@@ -10,12 +10,6 @@
 <head>
     <title>Home</title>
     <jsp:include page="_header.jsp"/>
-    <%--<style>--%>
-        <%--/*body*/--%>
-        <%--/*{*/--%>
-            <%--/*background: #00FF00 url(../bootstrap-3.3.7-dist/nasa.gif) no-repeat;background-size:100%;*/--%>
-        <%--/*}*/--%>
-    <%--</style>--%>
 </head>
 <body>
 <div class="modal fade" id="SignUpModel">
@@ -131,7 +125,7 @@
     </div>
 </div>
 <div class="container">
-    <jsp:include page="_head_for_show.jsp"/>
+    <jsp:include page="logined_head_for_show.jsp"/>
     <%--<form class="form-horizontal" role="form" onsubmit="return check_signin_form()">--%>
     <%--</form>--%>
     <%--<form class="form-horizontal" role="form" onsubmit="return check_signup_form()">--%>

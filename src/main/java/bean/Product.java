@@ -58,7 +58,7 @@ public class Product {
         ExpiredDate = expiredDate;
         Personal = user.getEmail();
         Official = official;
-        this.TEL = user.getTEL();
+        this.TEL = user.getTel();
         PricePerDay = pricePerDay;
         Settled = settled;
         Useless = useless;

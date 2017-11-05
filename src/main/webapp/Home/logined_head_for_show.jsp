@@ -10,7 +10,7 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="#">Galaxy</a>
-            <button class="navbar-toggle" type="button" data-toggle="collapse"
+            <button class="navbar-toggle " type="button" data-toggle="collapse"
                     data-target="#head_hide">
                 <span class="sr-only">Toggle Navigation</span>
                 <span class="icon-bar"></span>
@@ -36,15 +36,15 @@
                 </li>
             </ul>
             <div class="pull-right">
-                <button id="signin" data-toggle="modal" data-target="#SignInModel" class="btn navbar-btn btn-primary">
+                <button id="signin" data-toggle="modal" data-target="#SignInModel" class="hide btn navbar-btn btn-primary">
                     Sign in
                 </button>
-                <a class="hide" href="/test/userpage" id="username" >${sessionScope.user.name}</a>
+                <a href="/test/userpage" id="username" >${sessionScope.user.name}</a>
                 &nbsp;
-                <button id="signup" data-toggle="modal" data-target="#SignUpModel" class="btn navbar-btn btn-primary">
+                <button id="signup" data-toggle="modal" data-target="#SignUpModel" class="hide btn navbar-btn btn-primary">
                     Sign up
                 </button>
-                <a id="quit" class="btn navbar-btn btn-primary fade" href="/test/quit">
+                <a id="quit" class="btn navbar-btn btn-primary" href="/test/quit">
                     Quit
                 </a>
             </div>

@@ -5,13 +5,13 @@
   Time: 20:10
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%@ page isELIgnored="false" %>
+
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Bootstrap core JavaScript
-================================================== ->
+<!-- Bootstrap core JavaScript================================================== ->
 <!-- Placed at the end of the document so the pages load faster -->
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <%--<script src="../bootstrap-3.3.7-dist/js/jquery.min.js"></script>--%>
@@ -25,26 +25,32 @@
       integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
       integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-<%--<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>--%>
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 <%--<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->--%>
-<%--<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"--%>
-<%--integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"--%>
-<%--crossorigin="anonymous"></script>--%>
-
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <style type="text/css">
-    body {
-        top: 50px;
-        padding-bottom: 154px;
-    }
-
-    a:hover {
+    nav a:hover {
         text-decoration: none;
         color: white;
     }
 
-    a, p, h6 {
+    footer a:hover {
+        text-decoration: none;
+        color: white;
+    }
+
+    nav a, nav p, nav h6 {
         color: #8b8b8b;
+    }
+
+    footer a, footer p, footer h6 {
+        color: #8b8b8b;
+    }
+
+    body {
+        padding-bottom: 154px;
+        padding-top: 53px;
     }
 </style>
 
