@@ -11,7 +11,88 @@
 <head>
     <title>UserInfo</title>
     <jsp:include page="../_header.jsp"/>
+    <style>
+        .inputfile {
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+        }
 
+        .inputfile + label {
+            max-width: 80%;
+            font-size: 1.25rem;
+            /* 20px */
+            font-weight: 700;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            cursor: pointer;
+            display: inline-block;
+            overflow: hidden;
+            padding: 0.625rem 1.25rem;
+            /* 10px 20px */
+        }
+
+        /* style 6 */
+
+        .inputfile-6 + label {
+            color: #d3394c;
+        }
+
+        .inputfile-6 + label {
+            border: 1px solid #d3394c;
+            background-color: #f1e5e6;
+            padding: 0;
+        }
+
+        .inputfile-6:focus + label,
+        .inputfile-6.has-focus + label,
+        .inputfile-6 + label:hover {
+            border-color: #722040;
+        }
+
+        .inputfile-6 + label span,
+        .inputfile-6 + label strong {
+            padding: 0.625rem 1.25rem;
+            /* 10px 20px */
+        }
+
+        .inputfile-6 + label span {
+            width: 200px;
+            min-height: 2em;
+            display: inline-block;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            vertical-align: top;
+        }
+
+        .inputfile-6 + label strong {
+            height: 100%;
+            color: #f1e5e6;
+            background-color: #d3394c;
+            display: inline-block;
+        }
+
+        .inputfile-6:focus + label strong,
+        .inputfile-6.has-focus + label strong,
+        .inputfile-6 + label:hover strong {
+            background-color: #722040;
+        }
+
+        @media screen and (max-width: 50em) {
+            .inputfile-6 + label strong {
+                display: block;
+            }
+        }
+        img{
+            width: 240px;
+            height: 240px;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="../../bootstrap-3.3.7-dist/css/component.css"/>
 </head>
 <body>
 <div class="container">
@@ -21,108 +102,58 @@
             <div class="col-md-5">
                 <br>
                 <br>
-                <img src=${requestScope.headpic} class="img-responsive img-rounded center-block" width="240px"
-                height="240px" id="headpic">
+                <img class="img-responsive img-rounded center-block" id="headpic">
                 <script>
                     <%--$("#headpic").attr('src', '/userInfo/IOReadImage/' + ${sessionScope.user.headUID});--%>
                 </script>
                 <br>
                 <div style="text-align: center">Experience:${sessionScope.user.experience} Points</div>
                 <br>
-                <%--<form id="upHeadpic" action="/test/uploadHeadpic" enctype="multipart/form-data" method="post">--%>
-                <%--Upload File<input type="file" name="uploadFile"/>--%>
-                <%--&lt;%&ndash;<label><input type="radio" name="Access" onclick="if(this.value==1){this.value=0;this.checked=0}else this.c=1"  value="public">goPublic</label>&ndash;%&gt;--%>
-                <%--&lt;%&ndash;<input class="btn btn-primary btn-lg" type="submit" value="Change">&ndash;%&gt;--%>
+                <%--<form action="/test/upload" enctype="multipart/form-data" method="post" style="height: 29px">--%>
+                <div style="height: 29px">
+                    <input type="file" name="uploadFile" id="upfile" class="inputfile inputfile-6"
+                           data-multiple-caption="{count} files selected" multiple/>
+                    <label for="upfile"><span></span> <strong>
+                        Choose a file&hellip;</strong></label>
+                    <input class="btn btn-primary" id="upJQuery" style="margin-top: -34px;" type="submit"
+                           value="Submit">
+                </div>
+
+                <%--type="submit"--%>
                 <%--</form>--%>
-                <br>
-                <!--<div class="btn-toolbar " role="toolbar">-->
-                <div class="row" style="padding-top:10px;">
-                    <div class="col-xs-2">
-                        <button id="uploadBtn" class="btn btn-large btn-primary">Choose File</button>
-                    </div>
-                    <div class="col-xs-10">
-                        <div id="progressOuter" class="progress progress-striped active" style="display:none;">
-                            <div id="progressBar" class="progress-bar progress-bar-success" role="progressbar"
-                                 aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="padding-top:10px;">
-                    <div class="col-xs-10">
-                        <div id="msgBox">
-                        </div>
-                    </div>
-                </div>
-                <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                    <div class="btn-group">
-                        <%--<button class="btn btn-primary btn-lg" onclick="change_headpic()">Change</button>--%>
-                        <%--testpart--%>
-                        <script>
-                            function escapeTags(str) {
-                                return String(str)
-                                        .replace(/&/g, '&amp;')
-                                        .replace(/"/g, '&quot;')
-                                        .replace(/'/g, '&#39;')
-                                        .replace(/</g, '&lt;')
-                                        .replace(/>/g, '&gt;');
-                            }
-                            window.onload = function () {
-                                var btn = document.getElementById('uploadBtn'),
-                                        progressBar = document.getElementById('progressBar'),
-                                        progressOuter = document.getElementById('progressOuter'),
-                                        msgBox = document.getElementById('msgBox');
-                                var uploader = new ss.SimpleUpload({
-                                    button: btn,
-                                    url: '/test/uploadHeadpic',
-                                    name: 'uploadfile',
-                                    multipart: true,
-                                    hoverClass: 'hover',
-                                    focusClass: 'focus',
-                                    responseType: 'json',
-                                    startXHR: function () {
-                                        progressOuter.style.display = 'block'; // make progress bar visible
-                                        this.setProgressBar(progressBar);
-                                    },
-                                    onSubmit: function () {
-                                        msgBox.innerHTML = ''; // empty the message box
-                                        btn.innerHTML = 'Uploading...'; // change button text to "Uploading..."
-                                    },
-                                    onComplete: function (filename, response) {
-                                        btn.innerHTML = 'Choose Another File';
-                                        progressOuter.style.display = 'none'; // hide progress bar when upload is completed
-                                        if (!response) {
-                                            msgBox.innerHTML = 'Unable to upload file';
-                                            return;
-                                        }
-                                        if (response.success === true) {
-                                            msgBox.innerHTML = '<strong>' + escapeTags(filename) + '</strong>' + ' successfully uploaded.';
-                                        } else {
-                                            if (response.msg) {
-                                                msgBox.innerHTML = escapeTags(response.msg);
-                                            } else {
-                                                msgBox.innerHTML = 'An error occurred and the upload failed.';
-                                            }
-                                        }
-                                    },
-                                    onError: function () {
-                                        progressOuter.style.display = 'none';
-                                        msgBox.innerHTML = 'Unable to upload file';
-                                    }
-                                });
-                            };
-                        </script>
-                        <%--testpart--%>
-                    </div>
-                    <script>
-                        function change_headpic() {
-                            $("form").submit();
+                <script>
+                    $(document).ready(function () {
+                        $("#headpic").attr("src","/test/returnImg?addr="+"${requestScope.headpic}");
+                    });
+                    $('#upJQuery').on('click', function () {
+                            var fd = new FormData();
+                            fd.append("upload", 1);
+//                            fd.append("name", $("#upfile").files[0].name);
+//                            var filevalue = myfile.value;
+//                            var index = filevalue.lastIndexOf('.');
+//                            var after = filevalue.substring(index);
+//                            fd.append("after", after);
+                            fd.append("upfile", $("#upfile").get(0).files[0]);
+
+                            $.ajax({
+                                url: "/test/uploadHeadpic",
+                                type: "POST",
+                                processData: false,
+                                contentType: false,
+                                dataType: "json",
+                                data: fd,
+                                success: function (data) {
+//                                    alert(data);
+//                                    alert(data['address'].toString());
+                                    var src=data['address'].toString();
+                                    $("#headpic").attr("src","/test/returnImg?addr="+src+"");
+//                                console.log(d);
+                                }
+                            });
                         }
-                    </script>
-                    <div class="btn-group">
-                        <button class="btn btn-primary btn-lg " onclick="delete_headpic()">Delete</button>
-                    </div>
-                </div>
+                    );
+                </script>
+                <script src="../../bootstrap-3.3.7-dist/js/jquery.custom-file-input.js"></script>
             </div>
 
             <div class="col-md-7">

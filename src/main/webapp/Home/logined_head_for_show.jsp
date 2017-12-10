@@ -20,7 +20,7 @@
         </div>
         <div class="collapse navbar-collapse navbar-responsive-collapse" id="head_hide">
             <form class="navbar-form navbar-left" role="search">
-                <div class="form-group"><input type="text" class="form-control" placeholder="Serarch"></div>
+                <div class="form-group"><input type="text" class="form-control" placeholder="Search"></div>
                 <button type="submit" class="btn btn-default">Google</button>
             </form>
             <ul class="nav navbar-nav navbar-left">
@@ -39,7 +39,8 @@
                 <button id="signin" data-toggle="modal" data-target="#SignInModel" class="hide btn navbar-btn btn-primary">
                     Sign in
                 </button>
-                <a href="/test/userpage" id="username" >${sessionScope.user.name}</a>
+                <%--target="_blank"--%>
+                <a href="/test/userpage" target="_blank"  id="username">${sessionScope.user.name}</a>
                 &nbsp;
                 <button id="signup" data-toggle="modal" data-target="#SignUpModel" class="hide btn navbar-btn btn-primary">
                     Sign up

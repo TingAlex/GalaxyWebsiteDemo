@@ -1,5 +1,6 @@
 package servlet.UserPage;
 
+import bean.Album;
 import bean.UserInfo;
 import conn.ConnectionUtils;
 import utils.DatabaseTest;
@@ -25,7 +26,7 @@ public class userListenerPageServlet extends HttpServlet {
         HttpSession session=req.getSession();
         UserInfo user=(UserInfo)session.getAttribute("user");
         String headpic=user.getHeadUID();
-        String full_headpic="";
+        Album full_headpic=null;;
         if (headpic==null||headpic.equals("")){
             req.setAttribute("headpic","/Home/default_user_headpic.jpg");
         }else {

@@ -66,7 +66,7 @@
                            placeholder="tel">
                 </div>
                 <div class="form-group">
-                    <input type="checkbox" class="pull-right" id="rememberMe">rememberMe
+                    <input type="checkbox" class="pull-right" id="rememberMe" value="Y">rememberMe
                 </div>
             </div>
             <div class="modal-footer">
@@ -114,7 +114,7 @@
                     <input type="password" id="Password1" class="form-control input-lg" placeholder="Password">
                 </div>
                 <div class="form-group">
-                    <input type="checkbox" class="pull-right" id="rememberMe1">rememberMe
+                    <input type="checkbox" class="pull-right" id="rememberMe1" value="Y">rememberMe
                 </div>
             </div>
             <div class="modal-footer">
@@ -136,6 +136,17 @@
 </div>
 <jsp:include page="_footer.jsp"/>
 <script>
+    //防止页面后退
+//    history.pushState(null, null, document.URL);
+//    window.addEventListener('popstate', function () {
+//        history.pushState(null, null, document.URL);
+//    });
+    //防止后退不刷新
+//    window.onpageshow = function(event) {
+//        if (event.persisted) {
+//            window.location.reload()
+//        }
+//    };
 //    $(document).ready(function () {
 //        $.ajax(
 //                {
@@ -156,7 +167,7 @@
     function check_signin_form() {
         var user_id = $.trim($('#EmailOrNickName1').val());
         var pass = $.trim($('#Password1').val());
-
+        var remember = $.trim($('#rememberMe1').val());
         if (!user_id) {
             alert('ID can not be empty');
             return false;
@@ -169,7 +180,7 @@
         $.ajax(
                 {
                     url: "/test/login",
-                    data: {"user_id": user_id, "pass": pass},
+                    data: {"user_id": user_id, "pass": pass,"remember":remember},
                     type: "get",
                     dataType: "json",
                     beforeSend: function () {
@@ -183,6 +194,7 @@
                         } else {
                             transTologin(s);
                             $("#tip1").html("<span style='color:blueviolet'> Sign In Successful！</span>");
+//                            history.pushState({title:'push',url:'/test/login'});
                         }
                     },
                     error: function () {
@@ -202,6 +214,7 @@
         var school = $.trim($('#school-name').val());
         var schoolyears = $.trim($('#schoolyears').val());
         var tel = $.trim($('#tel').val());
+        var remember = $.trim($('#rememberMe').val());
 //        alert(email + nickname + password + realname + gender + school + schoolyears + tel);
         $.ajax(
                 {
@@ -209,7 +222,7 @@
                     data: {
                         "email": email, "nickname": nickname, "password": password,
                         "realname": realname, "gender": gender, "school": school, "schoolyears": schoolyears,
-                        "tel": tel
+                        "tel": tel,"remember":remember
                     },
                     type: "get",
                     dataType: "json",
@@ -299,6 +312,13 @@
                 }
         );
     }
+</script>
+<script>
+//    window.onpopstate = function(e){
+//        if(e.state){
+//            loaddiv.load(e.state.url);
+//        }
+//    }
 </script>
 <script src="../bootstrap-3.3.7-dist/js/school.js" type="text/javascript"></script>
 </body>

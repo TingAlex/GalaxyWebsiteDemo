@@ -16,14 +16,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import static utils.DatabaseTest.*;
 import static utils.UIDGenerator.getUID;
@@ -31,16 +29,14 @@ import static utils.UIDGenerator.getUID;
 /**
  * Created by Ting on 2017/9/24.
  */
-@WebServlet(name = "uploadHeadpicServlet", urlPatterns = {"/test/uploadHeadpic"})
+@WebServlet(name = "uploadPicServlet", urlPatterns = {"/test/uploadPic"})
 
-public class uploadHeadpicServlet extends HttpServlet {
+public class uploadPicServlet extends HttpServlet {
     private class message {
         private String address;
-
         public String getAddress() {
             return address;
         }
-
         public void setAddress(String address) {
             this.address = address;
         }
@@ -70,20 +66,11 @@ public class uploadHeadpicServlet extends HttpServlet {
                         int index = fileName.lastIndexOf('.');
                         String after = fileName.substring(index);
                         System.out.println(after);
-//                        //将节点信息保存到总表
-//                        FileInfo fileInfo = new FileInfo();
-//                        fileInfo.setFileName(fileName);
-                        //计算UID和key
                         String UID = getUID();
-
                         String errorString=null;
                         try {
                             Date date=new Date();
                             Connection conn = ConnectionUtils.getConnection();
-                            deletePicFileByUID(conn,user.getHeadUID());
-                            deletePicRecordByUID(conn,user.getHeadUID());
-                            user.setHeadUID(UID);
-                            updateUserHeadPicRecord(conn,user,user.getHeadUID());
                             Album album = new Album(UID,user.getUID(),after,date,"",0L,"");
                             addPics(conn,album);
                         } catch (ClassNotFoundException e) {
@@ -93,30 +80,10 @@ public class uploadHeadpicServlet extends HttpServlet {
                             e.printStackTrace();
                             errorString = e.getMessage();
                         }
-//                        fileInfo.setUID(UID);
-//                        fileInfo.setKey(UID);
-//                        fileInfo.setSize(new File(item.getName()).length());
-//                        HttpSession session = req.getSession();
-//                        String userName = (String) session.getAttribute("name");
-//                        fileInfo.setUser(userName);
-
-                        //将节点信息保存到waitList
-//                        WaitForUpload waitInfo = new WaitForUpload();
-//                        waitInfo.setFileName(fileName);
-//                        waitInfo.setUID(UID);
-//                        waitForUploadList.add(waitInfo);
                         String filePath = uploadPath + File.separator + UID + after;
                         File storeFile = new File(filePath);
                         System.out.println(filePath);
                         item.write(storeFile);
-//                        //把文件大小信息写进fileInfo
-//                        fileInfo.setSize(new File(filePath).length());
-//                        fileInfoList.add(fileInfo);
-                        //在这里开启线程执行上传文件到SN操作
-//                        if (UploadToSN(UID, new File(filePath))) {
-//                            req.setAttribute("uploadMessage", "upload success!");
-//                            req.setAttribute("UID", UID);
-                        //testpart
                         message ms = new message();
                         ms.setAddress(UID+after);
                         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -125,19 +92,11 @@ public class uploadHeadpicServlet extends HttpServlet {
                         System.out.println(gson.toJson(ms));
                         user.setHeadUID(UID);
                         resp.getWriter().print(gson.toJson(ms));
-                        //testpart
-//                        resp.getWriter().print("{\"message\":\"success!\",\"address\":\""+filePath+"\"}");
-//                            file=new File(filePath);
-//                            storeFile.delete();
-//                        } else
-//                            req.setAttribute("uploadMessage", "upload false");
-
                     }
                 }
             }
         } catch (Exception e) {
             System.out.println("uploadMessage error: " + e.getMessage());
         }
-//        req.getRequestDispatcher("/UserPage/Self_intro.jsp").forward(req, resp);
     }
 }

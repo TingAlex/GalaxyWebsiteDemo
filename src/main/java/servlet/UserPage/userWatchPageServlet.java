@@ -24,26 +24,7 @@ public class userWatchPageServlet extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         HttpSession session=req.getSession();
         UserInfo user=(UserInfo)session.getAttribute("user");
-        String headpic=user.getHeadUID();
-        String full_headpic="";
-        if (headpic==null||headpic.equals("")){
-            req.setAttribute("headpic","/Home/default_user_headpic.jpg");
-        }else {
-            String path=user.getUID();
-            String errorString;
-            try {
-                Connection conn= ConnectionUtils.getConnection();
-                full_headpic=DatabaseTest.getPicByUID(conn,headpic);
-            }catch (ClassNotFoundException e){
-                e.printStackTrace();
-                errorString = e.getMessage();
-            }catch (SQLException e) {
-                e.printStackTrace();
-                errorString = e.getMessage();
-            }
-            String full_headpic_path=DatabaseTest.ResourcePath+path+"\\"+full_headpic;
-            req.setAttribute("headpic",full_headpic_path);
-        }
+
 
         req.getRequestDispatcher("/Home/UserPage/Self_intro.jsp").forward(req,resp);
 //        UserInfo user=(UserInfo) req.getSession().getAttribute("user");

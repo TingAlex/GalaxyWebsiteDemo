@@ -27,7 +27,7 @@ public class doLoginServlet extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         String Name = req.getParameter("user_id");
         String Pass = req.getParameter("pass");
-        String rememberMeStr = req.getParameter("rememberMe");
+        String rememberMeStr = req.getParameter("remember");
         boolean remember= "Y".equals(rememberMeStr);
 
 //        String form=req.getParameter("form_data");
@@ -38,6 +38,7 @@ public class doLoginServlet extends HttpServlet {
             UserInfo userA = getUserByNickNameOrEmail(conn, Name, Pass);
             if (userA != null) {
                 System.out.print(userA.getName());
+                System.out.print("after sign in: "+userA.getHeadUID());
                 //设置session
                 MyUtils.storeLoginedUser(req.getSession(),userA);
                 // If user checked "Remember me".

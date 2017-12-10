@@ -5,6 +5,7 @@ import utils.UIDGenerator;
 import java.util.Date;
 
 /**
+ *
  * Created by Ting on 2017/9/16.
  */
 public class Album {

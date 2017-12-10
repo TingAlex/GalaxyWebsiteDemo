@@ -31,6 +31,7 @@ public class CookieFilter implements Filter {
 
         if (userInSession != null) {
             session.setAttribute("COOKIE_CHECKED", "CHECKED");
+            System.out.println(req.getServletPath());
             chain.doFilter(request, response);
             return;
         }
@@ -46,6 +47,12 @@ public class CookieFilter implements Filter {
             String userName = MyUtils.getUserNameInCookie(req);
             try {
                 UserInfo user = getUserByNickName(conn, userName);
+                if(user.getHeadUID()!=null){
+                    System.out.println("cookie filter: "+user.getHeadUID());
+                }
+                else {
+                    System.out.println("cookie filter: can't find user.headUID!!!");
+                }
                 MyUtils.storeLoginedUser(session, user);
             } catch (SQLException e) {
                 e.printStackTrace();

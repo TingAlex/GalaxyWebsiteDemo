@@ -1,5 +1,6 @@
 package servlet.UserPage;
 
+import bean.Album;
 import bean.UserInfo;
 import conn.ConnectionUtils;
 import utils.DatabaseTest;
@@ -24,28 +25,11 @@ public class userAlbumPageServlet extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         HttpSession session=req.getSession();
         UserInfo user=(UserInfo)session.getAttribute("user");
-        String headpic=user.getHeadUID();
-        String full_headpic="";
-        if (headpic==null||headpic.equals("")){
-            req.setAttribute("headpic","/Home/default_user_headpic.jpg");
-        }else {
-            String path=user.getUID();
-            String errorString;
-            try {
-                Connection conn= ConnectionUtils.getConnection();
-                full_headpic=DatabaseTest.getPicByUID(conn,headpic);
-            }catch (ClassNotFoundException e){
-                e.printStackTrace();
-                errorString = e.getMessage();
-            }catch (SQLException e) {
-                e.printStackTrace();
-                errorString = e.getMessage();
-            }
-            String full_headpic_path=DatabaseTest.ResourcePath+path+"\\"+full_headpic;
-            req.setAttribute("headpic",full_headpic_path);
-        }
-
-        req.getRequestDispatcher("/Home/UserPage/Self_intro.jsp").forward(req,resp);
+        //在地址栏里返回参数：包括20个图片的UID和总计图片除以20的数目，之后让网页前端自己构建出src，从而自行访问returnImg来取得照片，
+        //那么如何翻页呢？我们返回了页数pageNum在地址栏里，所以可以在页面下方通过js生成pageNum个小按钮<span>,并为每个按钮动态添加value，
+        //这样点击按钮，我们就返回这个value值，用ajax的方式发送给/test/album/getAlbumPage，这个servlet收到value后就会计算出那一页图片的起始位置
+        //然后在数据库中读取出来，然后把新的20个参数直接用js赋给哪些图片框的src
+        req.getRequestDispatcher("/Home/UserPage/Album.jsp").forward(req,resp);
 //        UserInfo user=(UserInfo) req.getSession().getAttribute("user");
 //        GsonBuilder gsonBuilder=new GsonBuilder();
 //        gsonBuilder.setPrettyPrinting();

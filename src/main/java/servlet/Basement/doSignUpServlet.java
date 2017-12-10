@@ -4,6 +4,8 @@ import bean.UserInfo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import conn.ConnectionUtils;
+import mail.SendMail;
+import utils.MyUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +18,7 @@ import java.sql.SQLException;
 
 import static utils.DatabaseTest.createUser;
 import static utils.MyUtils.storeLoginedUser;
+import static utils.UIDGenerator.getUID;
 
 /**
  * Created by Ting on 2017/8/26.
@@ -38,13 +41,23 @@ public class doSignUpServlet extends HttpServlet {
         user.setSign("");
         user.setUID();
         user.setSchoolAdmin(false);
+        //
+        user.setHeadUID(getUID());
         user.setAdmin(false);
         String errorString="";
+        String rememberMeStr = req.getParameter("remember");
+        boolean remember= "Y".equals(rememberMeStr);
         try {
+//            SendMail sm = new SendMail(user,0);
+//            new Thread(sm).start();
             Connection conn= ConnectionUtils.getConnection();
             createUser(conn, user);
             //设置session
             storeLoginedUser(req.getSession(),user);
+            System.out.println("after sign up: "+user.getHeadUID());
+            if(remember)  {
+                MyUtils.storeUserCookie(resp,user);
+            }
             //把用户信息输出到home.jsp，留待之后实现动态查看自己的缩略信息功能
             GsonBuilder gsonBuilder=new GsonBuilder();
             gsonBuilder.setPrettyPrinting();

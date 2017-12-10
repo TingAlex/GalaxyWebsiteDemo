@@ -1,5 +1,6 @@
 package servlet.UserPage;
 
+import bean.Album;
 import bean.UserInfo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -19,35 +20,32 @@ import java.sql.SQLException;
 /**
  * Created by Ting on 2017/8/30.
  */
-@WebServlet(name = "userPageServlet",urlPatterns = {"/test/userpage"})
+@WebServlet(name = "userPageServlet", urlPatterns = {"/test/userpage"})
 public class userPageServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setCharacterEncoding("UTF-8");
-        HttpSession session=req.getSession();
-        UserInfo user=(UserInfo)session.getAttribute("user");
-        String headpic=user.getHeadUID();
-        String full_headpic="";
-        if (headpic==null||headpic.equals("")){
-            req.setAttribute("headpic","/Home/default_user_headpic.jpg");
-        }else {
-            String path=user.getUID();
-            String errorString;
-            try {
-                Connection conn= ConnectionUtils.getConnection();
-                full_headpic=DatabaseTest.getPicByUID(conn,headpic);
-            }catch (ClassNotFoundException e){
-                e.printStackTrace();
-                errorString = e.getMessage();
-            }catch (SQLException e) {
-                e.printStackTrace();
-                errorString = e.getMessage();
-            }
-            String full_headpic_path=DatabaseTest.ResourcePath+path+"\\"+full_headpic;
-            req.setAttribute("headpic",full_headpic_path);
+        HttpSession session = req.getSession();
+        UserInfo user = (UserInfo) session.getAttribute("user");
+        String headpic = user.getHeadUID();
+        String after = null;
+        String errorString;
+        try {
+            Connection conn = ConnectionUtils.getConnection();
+            Album album = DatabaseTest.getPicByUID(conn, headpic);
+            after = album.getType();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            errorString = e.getMessage();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            errorString = e.getMessage();
         }
+        String headpic_path = headpic + after;
+        System.out.println("userpage: return path: "+headpic_path);
+        req.setAttribute("headpic", headpic_path);
 
-        req.getRequestDispatcher("/Home/UserPage/Self_intro.jsp").forward(req,resp);
+        req.getRequestDispatcher("/Home/UserPage/Self_intro.jsp").forward(req, resp);
 //        UserInfo user=(UserInfo) req.getSession().getAttribute("user");
 //        GsonBuilder gsonBuilder=new GsonBuilder();
 //        gsonBuilder.setPrettyPrinting();

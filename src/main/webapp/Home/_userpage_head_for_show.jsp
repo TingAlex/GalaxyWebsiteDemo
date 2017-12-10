@@ -21,15 +21,14 @@
         <div class="collapse navbar-collapse navbar-responsive-collapse" id="head_hide">
             <ul class="nav navbar-nav navbar-left">
                 <li id="self_intro"><a href="/test/userpage">Self-Intro</a></li>
+                <li id="album"><a href="/test/userAlbum">Album</a></li>
                 <li id="watch"><a href="#">Watch</a></li>
                 <li id="listener"><a href="#">Listener</a></li>
                 <li id="notice"><a href="#">Notice</a></li>
             </ul>
             <div class="pull-right">
                 <a href="/test/userpage">${sessionScope.user.name}</a>&nbsp;
-                <a href="/test/quit" id="quit" class="btn navbar-btn btn-primary">
-                    Quit
-                </a>
+                <a href="/test/quit" id="quit" class="btn navbar-btn btn-primary">Quit</a>
             </div>
         </div>
     </div>
