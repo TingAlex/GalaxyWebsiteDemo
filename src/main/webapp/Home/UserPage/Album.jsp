@@ -119,7 +119,7 @@
         }
     </style>
     <link rel="stylesheet" type="text/css" href="../../bootstrap-3.3.7-dist/css/component.css"/>
-    <link rel="stylesheet" type="text/css" href="../../bootstrap-3.3.7-dist/js/clipboard.min.js"/>
+    <script src="../../bootstrap-3.3.7-dist/js/clipboard.min.js"></script>
 </head>
 <body>
 <div class="container">
