@@ -24,11 +24,15 @@ public class DatabaseTest {
 
     public static void InitDatabase(Connection conn) throws SQLException {
         PreparedStatement pstm;
-        String createUserInfoTable = "CREATE TABLE userinfo(id CHAR (32) NOT NULL PRIMARY KEY, Name CHAR(40) NOT NULL ,Gender char(10),School char(50),SchoolYears char(20), TEL char(20),NickName char(40),Password char(20),Experience int(5),Email char(40),Sign char(50),HeadUID char(32),IsAdmin BOOLEAN NOT NULL,IsSchoolAdmin BOOLEAN NOT NULL )ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-        String createAlbumTable = "CREATE TABLE Album(UID CHAR(32) NOT NULL , PersonUID CHAR(32) NOT NULL , Type CHAR(32) NOT NULL , CreateDate DATETIME NOT NULL , Geolocation CHAR(50) , Hot LONG , Document CHAR(100))ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        String createUserInfoTable = "CREATE TABLE userinfo(id CHAR (32) NOT NULL PRIMARY KEY, Name CHAR(40) NOT NULL ,Gender char(10),School char(50),SchoolYears char(20), TEL char(20),NickName char(40),Password char(20),Experience int(5),Email char(40),Sign char(50),HeadUID char(32),IsAdmin BOOLEAN NOT NULL,IsSchoolAdmin BOOLEAN NOT NULL,UNIQUE (Email),UNIQUE (NickName))ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        String createAlbumTable = "CREATE TABLE Album(UID CHAR(32) NOT NULL , PersonUID CHAR(32) NOT NULL ,Title CHAR (50),Type CHAR(32) NOT NULL , CreateDate DATETIME NOT NULL , Geolocation CHAR(50) , Hot LONG , Document CHAR(100))ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
         String createProductTable = "CREATE TABLE product(id CHAR(32) NOT NULL PRIMARY KEY,Hot Long,Name CHAR(40) NOT NULL ,Detail CHAR(100),CreateDate DATE,ExpiredDate DATE,Personal CHAR(40),Official CHAR(50),TEL char(20),PricePerDay INT(4),Settled BOOLEAN,Useless BOOLEAN,Borrower CHAR(40))ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         String createNoticeAndInvationTable = "CREATE TABLE Notice(id CHAR(32) NOT NULL PRIMARY KEY,Sender CHAR(40) NOT NULL ,Official CHAR(50),Document CHAR(100),CreateDate DATE,ExpiredDate DATE,Receiver CHAR(40),Useless BOOLEAN,RangeArea CHAR(50),Geolocation CHAR(100),Classfy INT(4),Hot LONG)ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+
+        String createPostsTable = "CREATE TABLE POSTS(HEAD CHAR(32) NOT NULL PRIMARY KEY,WRITER CHAR(32) NOT NULL,CATEGORY CHAR(32) NOT NULL,TAG CHAR(32),POSTDATE DATE,CONTENT TEXT ) character set = utf8;";
+
+        String createCommentsTable = "CREATE TABLE COMMENTS(WRITER CHAR(32),TITLE CHAR(32),TEXTS TEXT,NUM BIGINT,PRIMARY KEY(WRITER,TITLE,NUM)) character set = utf8;";
 
         String sql = "DROP DATABASE IF EXISTS galaxy;";
         pstm = conn.prepareStatement(sql);
@@ -55,6 +59,14 @@ public class DatabaseTest {
         pstm.executeUpdate();
 
         sql = createNoticeAndInvationTable;
+        pstm = conn.prepareStatement(sql);
+        pstm.executeUpdate();
+
+        sql = createPostsTable;
+        pstm = conn.prepareStatement(sql);
+        pstm.executeUpdate();
+
+        sql = createCommentsTable;
         pstm = conn.prepareStatement(sql);
         pstm.executeUpdate();
     }
@@ -133,7 +145,7 @@ public class DatabaseTest {
         int i = pageNum * range;
         while (rs.next()) {
             System.out.println("test for index: " + i + " " + rs.getString("UID"));
-            getAlbumPageServlet.union ion=new getAlbumPageServlet.union(rs.getString("UID")+rs.getString("Type"),rs.getString("Title"),rs.getString("Document"));
+            getAlbumPageServlet.union ion = new getAlbumPageServlet.union(rs.getString("UID") + rs.getString("Type"), rs.getString("Title"), rs.getString("Document"));
             srcs.add(ion);
         }
         return srcs;
@@ -167,7 +179,6 @@ public class DatabaseTest {
 
         File rootFile = new File(userPath);
         rootFile.mkdir();
-
         String picPath = userPath + "\\pic";
         String productPath = userPath + "\\product";
         rootFile = new File(picPath);
@@ -248,7 +259,7 @@ public class DatabaseTest {
     }
 
     public static Album getPicByUID(Connection conn, String UID) throws SQLException {
-        //***通过用户中的headUID取得Album表中对应头像图片的UID和type的拼接字符串
+        //***通过用户中的headUID取得Album表中 对应头像图片的UID和type的拼接字符串
         String sql = "SELECT a.PersonUID,a.Type,a.CreateDate,a.Geolocation,a.Hot,a.Document FROM album a WHERE a.UID=?";
         PreparedStatement pstm = conn.prepareStatement(sql);
         pstm.setString(1, UID);
@@ -453,16 +464,16 @@ public class DatabaseTest {
             errorString = e.getMessage();
         }
 //        //Create a user
-//        try {
-//            Connection conn = ConnectionUtils.getConnection();
-//            createUser(conn, user);
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//            errorString = e.getMessage();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            errorString = e.getMessage();
-//        }
+        try {
+            Connection conn = ConnectionUtils.getConnection();
+            createUser(conn, user);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            errorString = e.getMessage();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            errorString = e.getMessage();
+        }
 //        //Create a product
 //        try {
 //            Connection conn= ConnectionUtils.getConnection();

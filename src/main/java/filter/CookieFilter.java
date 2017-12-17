@@ -1,7 +1,7 @@
 package filter;
 
 import bean.UserInfo;
-import utils.DBUtils;
+import conn.ConnectionUtils;
 import utils.MyUtils;
 
 import javax.servlet.*;
@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import static utils.DatabaseTest.getUserByNickName;
+import static utils.MyUtils.getAllInCookie;
 
 /**
  * Created by Administrator on 11/19/2016.
@@ -24,49 +25,42 @@ public class CookieFilter implements Filter {
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
+
         HttpServletRequest req = (HttpServletRequest) request;
+        System.out.println("Cookie Filter");
         HttpSession session = req.getSession();
-
+//        getAllInCookie(req);
         UserInfo userInSession = MyUtils.getLoginedUser(session);
-
-        if (userInSession != null) {
-            session.setAttribute("COOKIE_CHECKED", "CHECKED");
-            System.out.println(req.getServletPath());
+        if (userInSession == null) {
+            System.out.println("no user in session found");
+            String userName = MyUtils.getUserNameInCookie(req);
+            if (userName == null) {
+                System.out.println("user not in cookie");
+                chain.doFilter(request, response);
+                return;
+            } else {
+                System.out.println("user is in cookie and be add to session: " + userName);
+                try {
+//                    ConnectionUtils.getConnection()
+                    Connection conn = ConnectionUtils.getConnection();
+                    UserInfo user = getUserByNickName(conn, userName);
+                    MyUtils.storeLoginedUser(session, user);
+                    chain.doFilter(request, response);
+                    return;
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            System.out.println("found user in session" + userInSession.getName());
             chain.doFilter(request, response);
             return;
         }
-
-
-        // Connection was created in JDBCFilter.
-        Connection conn = MyUtils.getStoredConnection(request);
-
-
-        // Flag check cookie
-        String checked = (String) session.getAttribute("COOKIE_CHECKED");
-        if (checked == null && conn != null) {
-            String userName = MyUtils.getUserNameInCookie(req);
-            try {
-                UserInfo user = getUserByNickName(conn, userName);
-                if(user.getHeadUID()!=null){
-                    System.out.println("cookie filter: "+user.getHeadUID());
-                }
-                else {
-                    System.out.println("cookie filter: can't find user.headUID!!!");
-                }
-                MyUtils.storeLoginedUser(session, user);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            // Mark checked.
-            session.setAttribute("COOKIE_CHECKED", "CHECKED");
-        }
-
-        chain.doFilter(request, response);
     }
 
     public void init(FilterConfig config) throws ServletException {
-
     }
 
 }

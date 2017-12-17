@@ -56,7 +56,8 @@ public class DBUtils {
         }
         return null;
     }
-    public static void createUser(Connection conn, String userName, String gender,String password) throws SQLException {
+
+    public static void createUser(Connection conn, String userName, String gender, String password) throws SQLException {
 
         String sql = "Insert into User_Account(User_Name,Gender,Password) values (?,?,?) ";
         PreparedStatement pstm = conn.prepareStatement(sql);
@@ -65,6 +66,7 @@ public class DBUtils {
         pstm.setString(3, password);
         pstm.executeUpdate();
     }
+
     public static List<Product> queryProduct(Connection conn) throws SQLException {
         String sql = "Select a.Code, a.Name, a.Price from Product a ";
 

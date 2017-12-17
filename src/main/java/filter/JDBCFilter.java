@@ -20,7 +20,6 @@ public class JDBCFilter implements Filter {
     }
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request= (HttpServletRequest) req;
-        System.out.println("JDBC Filter " + request.getServletPath());
         //
         // Only open connections for the special requests need
         // connection. (For example, the path to the servlet, JSP, ..)
@@ -64,7 +63,7 @@ public class JDBCFilter implements Filter {
 
             // Allow request to go forward
             // (Go to the next filter or target)
-        chain.doFilter(req, resp);}
+            chain.doFilter(req, resp);}
     }
     public void init(FilterConfig config) throws ServletException {
 

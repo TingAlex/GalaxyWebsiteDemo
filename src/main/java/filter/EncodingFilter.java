@@ -7,7 +7,7 @@ import java.io.IOException;
 /**
  * Created by Administrator on 11/19/2016.
  */
-@WebFilter(filterName = "encodingFilter",urlPatterns = "/*")
+//@WebFilter(filterName = "encodingFilter",urlPatterns = "/*")
 public class EncodingFilter implements Filter {
     public void destroy() {
     }

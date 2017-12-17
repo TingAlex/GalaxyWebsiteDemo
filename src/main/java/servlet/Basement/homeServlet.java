@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static utils.MyUtils.getAllInCookie;
+
 /**
  * Created by Ting on 2017/11/6.
  */
@@ -17,15 +19,16 @@ import java.io.IOException;
 public class homeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("root");
+        System.out.println("the first page you may see");
+
         UserInfo user= MyUtils.getLoginedUser(req.getSession());
         if(user==null){
             System.out.println("HomePage");
             req.getRequestDispatcher("/Home/Home.jsp").forward(req,resp);
         }
         else{
-            System.out.println("loginedHomePage");
-            req.getRequestDispatcher("/test/returnHome").forward(req,resp);
+            System.out.println("/loginedHomePage");
+            req.getRequestDispatcher("/Home/loginedHome.jsp").forward(req,resp);
         }
     }
 

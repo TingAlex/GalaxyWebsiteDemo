@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static utils.MyUtils.getAllInCookie;
+
 /**
  * Created by Ting on 2017/9/21.
  */
@@ -17,6 +19,7 @@ public class quitServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //这里要清理掉cookie和session中的全部信息
+        getAllInCookie(req);
         MyUtils.deleteUserCookie(resp);
         MyUtils.quitLoginedUser(req);
         req.getRequestDispatcher("/Home/Home.jsp").forward(req,resp);

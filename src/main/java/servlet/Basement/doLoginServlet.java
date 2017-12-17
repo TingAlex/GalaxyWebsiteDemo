@@ -1,13 +1,16 @@
 package servlet.Basement;
 
 //import bean.TestPart.diaosi;
+
 import bean.UserInfo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import conn.ConnectionUtils;
 import utils.MyUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,26 +30,28 @@ public class doLoginServlet extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         String Name = req.getParameter("user_id");
         String Pass = req.getParameter("pass");
-        String rememberMeStr = req.getParameter("remember");
-        boolean remember= "Y".equals(rememberMeStr);
-
-//        String form=req.getParameter("form_data");
+        String rememberMeStr = req.getParameter("rememberMe1");
         System.out.println(Name + " " + Pass);
         String errorString;
         try {
-            Connection conn = MyUtils.getStoredConnection(req);
+            Connection conn = ConnectionUtils.getConnection();
             UserInfo userA = getUserByNickNameOrEmail(conn, Name, Pass);
             if (userA != null) {
-                System.out.print(userA.getName());
-                System.out.print("after sign in: "+userA.getHeadUID());
+//                System.out.print(userA.getName());
+//                System.out.print("after sign in: "+userA.getHeadUID());
                 //设置session
-                MyUtils.storeLoginedUser(req.getSession(),userA);
+                MyUtils.storeLoginedUser(req.getSession(), userA);
+
+//                Cookie isLogin=new Cookie("isLogin","Y");
+//                isLogin.setPath("/");
+//                resp.addCookie(isLogin);
+
                 // If user checked "Remember me".
-                if(remember)  {
-                    MyUtils.storeUserCookie(resp,userA);
+                if (rememberMeStr.equals("Y")) {
+                    MyUtils.storeUserCookie(resp, userA);
                 }
                 // Else delete cookie.
-                else  {
+                else {
                     MyUtils.deleteUserCookie(resp);
                 }
                 //把用户信息输出到home.jsp，留待之后实现动态查看自己的缩略信息功能
@@ -54,8 +59,8 @@ public class doLoginServlet extends HttpServlet {
                 gsonBuilder.setPrettyPrinting();
                 Gson gson = gsonBuilder.create();
                 resp.getWriter().print(gson.toJson(userA));
-            } else{
-                UserInfo newUser=new UserInfo();
+            } else {
+                UserInfo newUser = new UserInfo();
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.setPrettyPrinting();
                 Gson gson = gsonBuilder.create();
@@ -64,6 +69,8 @@ public class doLoginServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             errorString = e.getMessage();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

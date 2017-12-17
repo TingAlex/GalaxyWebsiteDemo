@@ -6,14 +6,15 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page isELIgnored="false" %>
 <html>
 <head>
     <title>Home</title>
     <jsp:include page="_header.jsp"/>
     <style>
-        body
-        {
-            background: #00FF00 url('../image/wallhaven.jpg') no-repeat;background-size:100%;
+        body {
+            background: #00FF00 url('../image/wallhaven.jpg') no-repeat;
+            background-size: 100%;
         }
     </style>
 </head>
@@ -21,13 +22,13 @@
 <div class="modal fade" id="SignUpModel">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header"><!--模态框头-->
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
                 <h4 class="modal-title">Sign Up</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body"><!--模态框主体-->
                 <div class="form-group">
-                    <input type="text" id="Email" class="form-control"
+                    <input type="email" id="Email" class="form-control" data-bv-notempty-message="XXX不能为空"
                            placeholder="Email">
                 </div>
                 <div class="form-group">
@@ -48,7 +49,7 @@
                         <option>Girl</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group"><!--学校选择-->
                     <input type="text" id="school-name" data-toggle="modal" data-target="#SchoolModel"
                            class="form-control" placeholder="Choose your school">
                 </div>
@@ -66,7 +67,7 @@
                            placeholder="tel">
                 </div>
                 <div class="form-group">
-                    <input type="checkbox" class="pull-right" id="rememberMe" value="Y">rememberMe
+                    <input type="radio" class="pull-right" name="signupRemem" value="Y">rememberMe
                 </div>
             </div>
             <div class="modal-footer">
@@ -108,13 +109,14 @@
             <div class="modal-body">
                 <div class="form-group">
                     <input type="text" id="EmailOrNickName1" class="form-control input-lg"
+                           value="${cookie.ATTRIBUTE_FOR_STORE_USER_NAME_IN_COOKIE.value}"
                            placeholder="UserName or Email">
                 </div>
                 <div class="form-group">
                     <input type="password" id="Password1" class="form-control input-lg" placeholder="Password">
                 </div>
                 <div class="form-group">
-                    <input type="checkbox" class="pull-right" id="rememberMe1" value="Y">rememberMe
+                    <input type="radio" class="pull-right" name="signinRemem" value="Y">rememberMe
                 </div>
             </div>
             <div class="modal-footer">
@@ -123,8 +125,8 @@
                         Sign In
                     </button>
                     <span id="tip1"></span>
-                    <span><a href="#" class="pull-left">Find password</a></span>
-                    <span><a href="#" class="pull-right">Sign Up</a></span>
+                    <span><a href="UserPage/find_password.jsp" class="pull-left">Find password</a></span>
+                    <span><a href="" class="pull-right">Haven't signed up yet</a></span>
                 </div>
             </div>
         </div>
@@ -132,42 +134,17 @@
 </div>
 <div class="container">
     <jsp:include page="_head_for_show.jsp"/>
-
 </div>
 <jsp:include page="_footer.jsp"/>
-<script>
-    //防止页面后退
-//    history.pushState(null, null, document.URL);
-//    window.addEventListener('popstate', function () {
-//        history.pushState(null, null, document.URL);
-//    });
-    //防止后退不刷新
-//    window.onpageshow = function(event) {
-//        if (event.persisted) {
-//            window.location.reload()
-//        }
-//    };
-//    $(document).ready(function () {
-//        $.ajax(
-//                {
-//                    url:"/test/getUserInfo",
-//                    type:"get",
-//                    dataType:"json",
-//                    success:function (data) {
-//                        var ss = data['Name'];
-//                        if (ss!=null){
-//                            transTologin(ss);
-//                        }
-//                    }
-//                }
-//        );
-//    });
-</script>
 <script>
     function check_signin_form() {
         var user_id = $.trim($('#EmailOrNickName1').val());
         var pass = $.trim($('#Password1').val());
-        var remember = $.trim($('#rememberMe1').val());
+//        var remember = $.trim($('#rememberMe1').val());
+        var remember="noremem";
+        if($("input[name='signinRemem']:checked").val()!=null){
+            remember=$("input[name='signinRemem']:checked").val();
+        }
         if (!user_id) {
             alert('ID can not be empty');
             return false;
@@ -176,11 +153,11 @@
             alert('Password can not be empty');
             return false;
         }
-
+//        alert(remember);
         $.ajax(
                 {
                     url: "/test/login",
-                    data: {"user_id": user_id, "pass": pass,"remember":remember},
+                    data: {"user_id": user_id, "pass": pass, "rememberMe1": remember},
                     type: "get",
                     dataType: "json",
                     beforeSend: function () {
@@ -188,11 +165,20 @@
                         return true;
                     },
                     success: function (data) {
-                        var s = data['Name'];
-                        if (s == null || s == "") {
+                        var nickname = data['NickName'];
+                        var password = data['Password'];
+//                        alert(nickname+" "+password);
+                        if (nickname == null || nickname == "") {
                             $("#tip1").html("<span style='color:blueviolet'> User not exits or password wrong！</span>");
                         } else {
-                            transTologin(s);
+//                            if($(remember)=="Y"){
+//                                Cookies.set('NickName', nickname,{expires:1});
+//                                Cookies.set('Password', password,{expires:1});
+//                            }else{
+//                                Cookies.set('NickName', nickname);
+//                                Cookies.set('Password', password);
+//                            }
+                            transTologin(nickname);
                             $("#tip1").html("<span style='color:blueviolet'> Sign In Successful！</span>");
 //                            history.pushState({title:'push',url:'/test/login'});
                         }
@@ -205,6 +191,7 @@
         return false;
     }
     function check_signup_form() {
+        var flag = true;
         var email = $.trim($('#Email').val());
         var nickname = $.trim($('#NickName').val());
         var password = $.trim($('#Password').val());
@@ -214,46 +201,78 @@
         var school = $.trim($('#school-name').val());
         var schoolyears = $.trim($('#schoolyears').val());
         var tel = $.trim($('#tel').val());
-        var remember = $.trim($('#rememberMe').val());
+        var remember="noremem";
+        if($("input[name='signupRemem']:checked").val()!=null){
+            remember=$("input[name='signinRemem']:checked").val();
+        }
 //        alert(email + nickname + password + realname + gender + school + schoolyears + tel);
-        $.ajax(
-                {
-                    url: "/test/signup",
-                    data: {
-                        "email": email, "nickname": nickname, "password": password,
-                        "realname": realname, "gender": gender, "school": school, "schoolyears": schoolyears,
-                        "tel": tel,"remember":remember
-                    },
-                    type: "get",
-                    dataType: "json",
-                    beforeSend: function () {
-                        $("#tip").html("<span style='color:blue'>Processing</span>");
-                        return true;
-                    },
-                    success: function (data) {
-                        var s = data['Name'];
-                        if (s == null || s == "") {
-                            $("#tip").html("<span style='color:blueviolet'> User can't be create！</span>");
-                        } else {
-                            transTologin(s);
-                            $("#tip").html("<span style='color:blueviolet'> Sign Up Successful！</span>");
-                        }
-                        transTologin(s);
-//                        var s="";
-//                        $.each(data,function (k, v) {
-//                            s+=k+":"+v;
-//                        });
-//                        alert(s);
-                    },
-                    error: function () {
-                        alert('Request Wrong!');
+        if (tel.length == 0) {
+            alert("手机号码没有输入！");
+            flag = false;
+            $('#phone').focus();
+        } else {
+            var telret = /(\d{3}-|\d{4}-)?(\d{8}|\d{7}|\d{11})?/
+            if (telret.test(tel) == false) {
+                alert("手机或电话号码不正确！");
+                flag = false;
+                $('#phone').focus();
+            }
+        }
+        if (email.length == 0) {
+            alert("电子邮箱不能为空！");
+            flag = false;
+            $("#Email").focus();
+        } else {
+            var emailret = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
+            if (emailret.test(email) == false) {
+                alert("电子邮箱格式不正确！");
+                flag = false;
+                $('#Email').focus();
+            }
+        }
+        if (flag == true) {
+            $.ajax(
+                    {
+                        url: "/test/signup",
+//
+                        data: {
+                            "email": email, "nickname": nickname, "password": password,
+                            "realname": realname, "gender": gender, "school": school, "schoolyears": schoolyears,
+                            "tel": tel, "rememberMe": remember
+                        },
+                        type: "get",
+                        dataType: "json",
+                        beforeSend: function () {
+                            $("#tip").html("<span style='color:blue'>Processing</span>");
+                            return true;
+                        },
+                        success: function (data) {
+                            var nickname = data['NickName'];
+                            var password = data['Password'];
+                            if (nickname == null || nickname == "") {
+                                $("#tip").html("<span style='color:blueviolet'> User can't be create！</span>");
+                            } else {
+//                                if($(remember)=="Y"){
+//                                    Cookies.set('NickName', nickname,{expires:1});
+//                                    Cookies.set('Password', password,{expires:1});
+//                                }else{
+//                                    Cookies.set('NickName', nickname);
+//                                    Cookies.set('Password', password);
+//                                }
+                                transTologin(nickname);
+                                $("#tip").html("<span style='color:blueviolet'> Sign Up Successful！</span>");
+                            }
+                        },
+                        error: function () {
+                            alert('您的邮箱已经注册过该网站！');
 //                        setTimeout($("#SignUpModel").modal("hide"),3000);
-                    },
-                    complete: function () {
-                        $('#acting_tips').hide();
+                        },
+                        complete: function () {
+                            $('#acting_tips').hide();
+                        }
                     }
-                }
-        )
+            )
+        }
     }
 </script>
 <script>
@@ -314,11 +333,33 @@
     }
 </script>
 <script>
-//    window.onpopstate = function(e){
-//        if(e.state){
-//            loaddiv.load(e.state.url);
-//        }
-//    }
+    <%--$(document).ready(function () {--%>
+        <%--&lt;%&ndash;if ("${cookie.isLogin.value}" == "Y") {&ndash;%&gt;--%>
+        <%--&lt;%&ndash;$("#signin").hide();&ndash;%&gt;--%>
+        <%--&lt;%&ndash;$("#signup").hide();&ndash;%&gt;--%>
+        <%--&lt;%&ndash;$("#username").text("${cookie.ATTRIBUTE_FOR_STORE_USER_NAME_IN_COOKIE.value}");&ndash;%&gt;--%>
+        <%--&lt;%&ndash;$("#username").removeClass("hide");&ndash;%&gt;--%>
+        <%--&lt;%&ndash;$("#quit").removeClass("fade");&ndash;%&gt;--%>
+        <%--&lt;%&ndash;$('#account').removeClass("hide");//哪个是accout这个？？？&ndash;%&gt;--%>
+        <%--&lt;%&ndash;}&ndash;%&gt;--%>
+        <%--var user_id = Cookies.get('NickName');--%>
+        <%--var pass = Cookies.get('Password');--%>
+        <%--var remember = $.trim($('#rememberMe1').val());--%>
+        <%--if (user_id!=null && pass!=null) {--%>
+            <%--$.ajax(--%>
+                    <%--{--%>
+                        <%--url: "/test/login",--%>
+<%--//--%>
+                        <%--data: {"user_id": user_id, "pass": pass,"rememberMe1": remember},--%>
+                        <%--type: "get",--%>
+                        <%--dataType: "json",--%>
+                        <%--success: function (data) {--%>
+                            <%--var nickname = data['NickName'];--%>
+                            <%--transTologin(nickname);--%>
+                        <%--}--%>
+                    <%--});--%>
+        <%--}--%>
+    <%--})--%>
 </script>
 <script src="../bootstrap-3.3.7-dist/js/school.js" type="text/javascript"></script>
 </body>

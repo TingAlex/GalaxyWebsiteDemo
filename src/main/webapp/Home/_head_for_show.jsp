@@ -5,7 +5,10 @@
   Time: 11:03
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@page isELIgnored="false" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<jsp:include page="_header.jsp"></jsp:include>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -23,9 +26,14 @@
                 <div class="form-group"><input type="text" class="form-control" placeholder="Search"></div>
                 <button type="submit" class="btn btn-default">Google</button>
             </form>
-            <ul class="nav navbar-nav navbar-left">
+            <ul class="nav navbar-nav">
+                <li><a href="/test/goForum">论坛</a></li>
+                <li><a href="#">市场</a></li>
+            </ul>
+            <%--这里改成了navbar-right--%>
+            <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Dropdown
+                    <a class="dropdown-toggle hide" data-toggle="dropdown" href="#" id="account">Account
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">

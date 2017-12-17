@@ -3,12 +3,15 @@ package servlet.Basement;
 import bean.UserInfo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.sun.org.apache.bcel.internal.ExceptionConstants;
 import conn.ConnectionUtils;
 import mail.SendMail;
 import utils.MyUtils;
 
+import javax.mail.SendFailedException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,22 +44,27 @@ public class doSignUpServlet extends HttpServlet {
         user.setSign("");
         user.setUID();
         user.setSchoolAdmin(false);
-        //
         user.setHeadUID(getUID());
         user.setAdmin(false);
         String errorString="";
-        String rememberMeStr = req.getParameter("remember");
-        boolean remember= "Y".equals(rememberMeStr);
+        String rememberMeStr = req.getParameter("rememberMe");
+
         try {
-//            SendMail sm = new SendMail(user,0);
-//            new Thread(sm).start();
+            SendMail sm = new SendMail(user,0);//need later run for test
+            new Thread(sm).start();//these two lines
             Connection conn= ConnectionUtils.getConnection();
             createUser(conn, user);
             //设置session
             storeLoginedUser(req.getSession(),user);
             System.out.println("after sign up: "+user.getHeadUID());
-            if(remember)  {
+
+            // If user checked "Remember me".
+            if(rememberMeStr.equals("Y"))  {
                 MyUtils.storeUserCookie(resp,user);
+            }
+            // Else delete cookie.
+            else  {
+                MyUtils.deleteUserCookie(resp);
             }
             //把用户信息输出到home.jsp，留待之后实现动态查看自己的缩略信息功能
             GsonBuilder gsonBuilder=new GsonBuilder();
